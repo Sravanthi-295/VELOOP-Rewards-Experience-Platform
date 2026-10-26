@@ -1,30 +1,79 @@
 # VELOOP Rewards Dashboard
 
-A responsive React + Vite dashboard design inspired by the supplied VELOOP Rewards visual reference.
+A modern, responsive rewards dashboard built with React and Vite, inspired by the supplied VELOOP Rewards visual reference.
 
-## Run locally
+## Features
 
-1. Install Node.js (LTS) if it is not installed.
-2. Extract this folder and open it in VS Code.
-3. Open the VS Code terminal in this project folder.
-4. Run:
+- Interactive rewards dashboard
+- XP tracking and level progression
+- Next-level reward section
+- Level progression roadmap
+- Interactive coin-catching mini-game
+- Earning opportunities and reward activity sections
+- Responsive design for desktop and mobile devices
 
-   ```bash
-   npm install
-   npm run dev
-   ```
+## Tech Stack
 
-5. Open the local URL shown in the terminal, usually `http://localhost:5173`.
-
-## Stack
-- React + Vite
+- React.js
+- Vite
 - Bootstrap 5
 - CSS Modules
 - React Hooks
-- Lucide React icons
+- Lucide React
 
-## Notes
-- XP, reward amounts, user name, activity history and game values are demo data for the UI.
-- The Coin Catcher modal is a small frontend-only demo. XP resets on page refresh.
-- Referral and other unsupported earning options are labelled Coming Soon/demo placeholders.
-- This starter does not connect to a backend or process real rewards.
+## Run Locally
+
+### Prerequisites
+
+Install [Node.js](https://nodejs.org/), preferably the LTS version.
+
+### Installation Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Sravanthi-295/VELOOP-Rewards-Experience-Platform.git
+   ```
+
+2. Navigate to the project folder:
+
+   ```bash
+   cd VELOOP-Rewards-Experience-Platform
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the local URL displayed in your terminal.
+
+## Project Structure
+
+```text
+VELOOP-Rewards-Experience-Platform/
+├── src/
+│   ├── Dashboard.jsx
+│   ├── Dashboard.module.css
+│   ├── global.css
+│   └── main.jsx
+├── index.html
+├── package.json
+├── package-lock.json
+└── README.md
+```
+
+## Project Status
+
+Frontend prototype. Reward values and interactions are for demonstration purposes and do not represent verified official VELOOP rewards.
+
+## Author
+
+Sravanthi
