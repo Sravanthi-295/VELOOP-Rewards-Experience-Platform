@@ -1,195 +1,460 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from "react";
 import {
-  LayoutDashboard, Gamepad2, Coins, Gift, Trophy, UserRound, Bell, ChevronDown,
-  Crown, LockKeyhole, CalendarDays, Play, UsersRound, Clock3, ArrowRight,
-  Zap, Check, Sparkles, RotateCcw, X
-} from 'lucide-react';
-import styles from './Dashboard.module.css';
+  Trophy,
+  Zap,
+  Gift,
+  Gamepad2,
+  Target,
+  Clock3,
+  LockKeyhole,
+  CheckCircle2,
+  ArrowRight,
+  Star,
+  RotateCcw,
+  Flame,
+  Info,
+} from "lucide-react";
 
-const taskItems = [
-  { icon: CalendarDays, title: 'Daily Login', reward: '+10 XP', color: 'blue' },
-  { icon: Play, title: 'Watch a Video', reward: '+15 XP', color: 'blue' },
-  { icon: Gamepad2, title: 'Complete a Game', reward: '+20 XP', color: 'purple' },
-  { icon: UsersRound, title: 'Refer a Friend', reward: 'Coming soon', color: 'teal' }
+import styles from "./Dashboard.module.css";
+
+const levels = [
+  { level: 1, name: "Starter", xp: 0, badge: "/badges/level-1.png" },
+  { level: 2, name: "Explorer", xp: 500, badge: "/badges/level-2.png" },
+  { level: 3, name: "Achiever", xp: 1500, badge: "/badges/level-3.png" },
+  { level: 4, name: "Champion", xp: 3000, badge: "/badges/level-4.png" },
+  { level: 5, name: "Elite", xp: 5000, badge: "/badges/level-5.png" },
+  { level: 6, name: "Legend", xp: 8000, badge: "/badges/level-6.png" },
 ];
 
-const activityItems = [
-  { icon: CalendarDays, title: 'Completed Daily Login', reward: '+10 XP', time: '2 hours ago', color: 'blue' },
-  { icon: Gamepad2, title: 'Played Coin Catcher', reward: '+25 VEs', time: '3 hours ago', color: 'teal' },
-  { icon: Gift, title: 'Reached Level 04', reward: '+500 XP', time: '1 day ago', color: 'purple' },
-  { icon: UsersRound, title: 'Completed Task', reward: '+15 XP', time: '1 day ago', color: 'green' },
-  { icon: Gift, title: 'Claimed Reward', reward: '+100 VEs', time: '2 days ago', color: 'orange' }
-];
+// DEMO DATA ONLY: replace with approved values when available.
+const currentXP = 4200;
+const currentLevel = 4;
+const nextLevelXP = 5000;
+const demoReward = "500 VEs";
 
-const levels = [1, 2, 3, 4, 5, 6, 7, 8];
+function BadgeImage({ src, alt, className }) {
+  const [failed, setFailed] = useState(false);
 
-export default function Dashboard() {
-  const [xp, setXp] = useState(6420);
-  const [gameOpen, setGameOpen] = useState(false);
-  const [gameScore, setGameScore] = useState(0);
-  const [played, setPlayed] = useState(0);
-  const [notice, setNotice] = useState('');
-
-  const levelStart = 0;
-  const nextLevelXp = 8000;
-  const progress = Math.min((xp / nextLevelXp) * 100, 100);
-  const xpRemaining = Math.max(nextLevelXp - xp, 0);
-
-  function startGame() {
-    setGameScore(0);
-    setGameOpen(true);
-    setNotice('');
-  }
-
-  function catchCoin() {
-    setGameScore((score) => score + 1);
-  }
-
-  function finishGame() {
-    const earned = gameScore * 5;
-    setXp((current) => Math.min(current + earned, nextLevelXp));
-    setPlayed((current) => current + 1);
-    setNotice(`Demo game complete! You caught ${gameScore} coins and earned ${earned} XP.`);
-    setGameOpen(false);
-  }
-
-  function completeDailyLogin() {
-    setXp((current) => Math.min(current + 10, nextLevelXp));
-    setNotice('Demo task completed: +10 XP added.');
+  if (failed) {
+    return (
+      <div className={`${styles.badgeFallback} ${className || ""}`}>
+        <Trophy size={28} />
+      </div>
+    );
   }
 
   return (
-    <div className={styles.appShell}>
-      <aside className={styles.sidebar}>
-        <div className={styles.brand}>
-          <div className={styles.brandMark}>V</div>
-          <div><strong>VELOOP</strong><span>REWARDS</span></div>
-        </div>
-        <nav className={styles.nav}>
-          {[
-            [LayoutDashboard, 'Dashboard', true],
-            [Gamepad2, 'Games'],
-            [Coins, 'Earn More'],
-            [Gift, 'Rewards'],
-            [Trophy, 'Leaderboard'],
-            [UserRound, 'Profile']
-          ].map(([Icon, label, active]) => (
-            <button key={label} className={`${styles.navItem} ${active ? styles.navActive : ''}`} onClick={() => label !== 'Dashboard' && setNotice(`${label} section is a demo placeholder.`)}>
-              <Icon size={19} /><span>{label}</span>
-            </button>
-          ))}
-        </nav>
-        <div className={styles.sidebarPromo}>
-          <Crown size={30} className={styles.goldIcon} />
-          <h3>More Play<br />More Rewards</h3>
-          <p>Complete challenges, earn XP, and unlock exclusive rewards!</p>
-          <button className={styles.goldButton} onClick={() => setNotice('Explore more earning opportunities — more features coming soon.')}>Explore Now <ArrowRight size={15} /></button>
-        </div>
-      </aside>
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
-      <main className={styles.main}>
-        <header className={styles.topbar}>
+export default function Dashboard() {
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [seconds, setSeconds] = useState(20);
+  const [activityMessage, setActivityMessage] = useState("");
+
+  const progress = Math.min(
+    100,
+    Math.round((currentXP / nextLevelXP) * 100)
+  );
+
+  const xpRemaining = Math.max(0, nextLevelXP - currentXP);
+
+  function startGame() {
+    setScore(0);
+    setSeconds(20);
+    setGameOver(false);
+    setGameStarted(true);
+
+    let remaining = 20;
+
+    const timer = setInterval(() => {
+      remaining -= 1;
+      setSeconds(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+        setGameStarted(false);
+        setGameOver(true);
+      }
+    }, 1000);
+  }
+
+  function catchCoin() {
+    if (gameStarted && seconds > 0) {
+      setScore((previous) => previous + 1);
+    }
+  }
+
+  function resetGame() {
+    setGameStarted(false);
+    setGameOver(false);
+    setScore(0);
+    setSeconds(20);
+  }
+
+  return (
+    <main className={styles.dashboard}>
+      <header className={styles.header}>
+        <a href="#home" className={styles.brand}>
+          <span className={styles.brandIcon}>V</span>
+          <span>VELOOP <small>REWARDS</small></span>
+        </a>
+
+        <div className={styles.headerRight}>
+          <span className={styles.demoTag}>DEMO EXPERIENCE</span>
+          <div className={styles.avatar}>S</div>
+        </div>
+      </header>
+
+      <div className={styles.container} id="home">
+        <section className={styles.welcome}>
           <div>
-            <h1>Good Morning, Alex! <span className={styles.wave}>👋</span></h1>
-            <p>Keep earning XP, unlock new levels, and discover better rewards<br className="d-none d-md-block" /> along the way.</p>
+            <span className={styles.eyebrow}>YOUR REWARDS JOURNEY</span>
+            <h1>Every step takes you <span>higher.</span></h1>
+            <p>
+              Earn XP, explore challenges, and discover what awaits at your
+              next level.
+            </p>
           </div>
-          <div className={styles.userArea}>
-            <button className={styles.bell} aria-label="Notifications" onClick={() => setNotice('You are all caught up!')}><Bell size={20}/><i /></button>
-            <div className={styles.avatar}>AS</div>
-            <button className={styles.userName} onClick={() => setNotice('Profile menu is a demo placeholder.')}>Alex Smith <ChevronDown size={15}/></button>
-          </div>
-        </header>
 
-        {notice && <div className={styles.notice} role="status"><Sparkles size={16}/>{notice}<button onClick={() => setNotice('')} aria-label="Dismiss"><X size={16}/></button></div>}
+          <div className={styles.streak}>
+            <Flame size={22} />
+            <div>
+              <strong>Keep going!</strong>
+              <span>Your next achievement awaits.</span>
+            </div>
+          </div>
+        </section>
 
         <section className={styles.heroGrid}>
-          <div className={styles.levelCard}>
-            <div className={styles.levelBadge}><Crown size={22}/><strong>04</strong></div>
-            <div className={styles.levelDetails}>
-              <span className={styles.eyebrow}>Current Level</span>
-              <h2>Level 04</h2><p className={styles.rank}>Explorer</p>
-              <div className={styles.progressLine}><div><span style={{width: `${progress}%`}} /></div><b>{nextLevelXp.toLocaleString()} XP</b></div>
-              <div className={styles.xpRow}><strong>{xp.toLocaleString()} XP</strong><span>(Next Level)</span></div>
-              <small><Crown size={13}/> {xpRemaining.toLocaleString()} XP remaining to reach Level 05</small>
+          <article className={styles.levelCard}>
+            <div className={styles.cardTop}>
+              <span className={styles.eyebrow}>YOUR CURRENT LEVEL</span>
+              <span className={styles.status}>
+                <span /> IN PROGRESS
+              </span>
             </div>
-            <div className={styles.mountainGlow} />
-          </div>
 
-          <div className={styles.rewardCard}>
-            <div className={styles.cardHeading}><span className={styles.headingIcon}><Gift size={19}/></span><h2>Next-Level Reward</h2></div>
-            <div className={styles.rewardContent}>
-              <div className={styles.coinArt}>🪙</div>
-              <div><h3>500 VEs</h3><p>Level 05 Reward</p></div>
-              <span className={styles.lock}><LockKeyhole size={20}/></span>
-            </div>
-            <button className={styles.mutedButton} onClick={() => setNotice(`Earn ${xpRemaining.toLocaleString()} more XP to reach Level 05.`)}>Reach Level 05 to unlock this reward</button>
-          </div>
-        </section>
+            <div className={styles.levelMain}>
+              <BadgeImage
+                src="/badges/level-4.png"
+                alt="Current level badge"
+                className={styles.heroBadge}
+              />
 
-        <section className={styles.contentGrid}>
-          <div className={`${styles.panel} ${styles.gamePanel}`}>
-            <div className={styles.cardHeading}><span className={`${styles.headingIcon} ${styles.purpleIcon}`}><Gamepad2 size={22}/></span><div><h2>Play &amp; Earn</h2><p>Complete fun games, earn XP and rewards!</p></div></div>
-            <div className={styles.gameCard}>
-              <div className={styles.gameArtwork}><div className={styles.spaceStars}>✦　·　✧　·　✦</div><span className={styles.rocket}>🚀</span><span className={styles.floatingCoin}>🪙</span></div>
-              <div className={styles.gameInfo}>
-                <h3>Coin Catcher</h3><p>Catch falling VE coins and earn XP!</p>
-                <button className={styles.goldButton} onClick={startGame}>Play Now <ArrowRight size={15}/></button>
-              </div>
-              <div className={styles.gameRewards}>
-                <strong>Rewards</strong>
-                <span>⭐ <b>+20 XP</b></span><span>🪙 <b>+25 VEs</b></span>
-                <label>Time Limit</label><span><Clock3 size={15}/> 60 seconds</span>
-                <small>{Math.min(played, 3)}/3 plays today</small>
+              <div>
+                <span className={styles.levelNumber}>
+                  LEVEL {String(currentLevel).padStart(2, "0")}
+                </span>
+                <h2>Champion</h2>
+                <p>You are making great progress.</p>
               </div>
             </div>
-          </div>
 
-          <div className={styles.panel}>
-            <div className={styles.cardHeading}><span className={styles.headingIcon}><Zap size={21}/></span><div><h2>Earn More XP</h2><p>Complete daily tasks and challenges</p></div></div>
-            <div className={styles.taskList}>
-              {taskItems.map(({icon: Icon, title, reward, color}, index) => (
-                <button className={styles.taskItem} key={title} onClick={index === 0 ? completeDailyLogin : () => setNotice(reward === 'Coming soon' ? `${title} — Coming Soon` : `${title} is a demo task. Full functionality can be added next.`)}>
-                  <span className={`${styles.taskIcon} ${styles[color]}`}><Icon size={19}/></span><span className={styles.taskText}><strong>{title}</strong><small>{reward === 'Coming soon' ? reward : reward}</small></span><ArrowRight size={18} className={styles.taskArrow}/>
-                </button>
-              ))}
+            <div className={styles.xpHeading}>
+              <span><Zap size={16} /> XP PROGRESS</span>
+              <strong>{currentXP.toLocaleString()} / {nextLevelXP.toLocaleString()}</strong>
             </div>
-            <button className={styles.mutedButton} onClick={() => setNotice('More tasks will be added here.')}>View All Tasks <ArrowRight size={15}/></button>
-          </div>
 
-          <div className={styles.panel}>
-            <div className={styles.cardHeading}><span className={styles.headingIcon}><Clock3 size={21}/></span><div><h2>Recent Activity</h2><p>Your latest XP and reward activity</p></div></div>
-            <div className={styles.activityList}>
-              {activityItems.map(({icon: Icon, title, reward, time, color}) => (
-                <div className={styles.activityItem} key={title}><span className={`${styles.activityIcon} ${styles[color]}`}><Icon size={17}/></span><span className={styles.activityText}><strong>{title}</strong><small>{reward}</small></span><time>{time}</time></div>
-              ))}
+            <div
+              className={styles.progressTrack}
+              role="progressbar"
+              aria-label="XP progress to next level"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <div
+                className={styles.progressFill}
+                style={{ width: `${progress}%` }}
+              />
             </div>
-          </div>
+
+            <div className={styles.progressBottom}>
+              <span>{progress}% completed</span>
+              <strong>{xpRemaining.toLocaleString()} XP to go</strong>
+            </div>
+
+            <div className={styles.levelStats}>
+              <div>
+                <Zap size={18} />
+                <span>Total XP</span>
+                <strong>{currentXP.toLocaleString()}</strong>
+              </div>
+              <div>
+                <Trophy size={18} />
+                <span>Current level</span>
+                <strong>{currentLevel}</strong>
+              </div>
+              <div>
+                <Target size={18} />
+                <span>Next goal</span>
+                <strong>Level {currentLevel + 1}</strong>
+              </div>
+            </div>
+          </article>
+
+          <article className={styles.rewardCard}>
+            <div className={styles.rewardTop}>
+              <span className={styles.eyebrow}>YOUR NEXT REWARD</span>
+              <Gift size={21} />
+            </div>
+
+            <div className={styles.rewardVisual}>
+              <div className={styles.rewardGlow}>
+                <Gift size={52} strokeWidth={1.3} />
+              </div>
+              <span className={styles.lockIcon}>
+                <LockKeyhole size={16} />
+              </span>
+            </div>
+
+            <span className={styles.rewardLabel}>LEVEL {currentLevel + 1} REWARD</span>
+            <h2>{demoReward}</h2>
+            <p>Keep earning XP to reach your next milestone.</p>
+
+            <div className={styles.rewardProgress}>
+              <div>
+                <span>Unlock progress</span>
+                <strong>{progress}%</strong>
+              </div>
+              <div className={styles.progressTrack}>
+                <div
+                  className={styles.progressFill}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+
+            <p className={styles.disclaimer}>
+              <Info size={14} /> Illustrative reward only. Official reward
+              values are not connected.
+            </p>
+          </article>
         </section>
 
-        <section className={`${styles.panel} ${styles.roadmapPanel}`}>
-          <div className={styles.roadmapHeader}><div className={styles.cardHeading}><span className={styles.headingIcon}><Gift size={20}/></span><div><h2>Level Progression</h2><p>Your journey to bigger rewards</p></div></div><button className={styles.mutedButton} onClick={() => setNotice('Full level roadmap is coming soon.')}>View All Levels <ArrowRight size={15}/></button></div>
+        <section className={styles.section}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.eyebrow}>YOUR JOURNEY</span>
+              <h2>Level progression</h2>
+              <p>Look how far you have come. Your next goal is waiting.</p>
+            </div>
+          </div>
+
           <div className={styles.roadmap}>
-            {levels.map((level) => {
-              const state = level < 4 ? 'completed' : level === 4 ? 'current' : level === 5 ? 'next' : 'locked';
-              return <div className={`${styles.levelStep} ${styles[state]}`} key={level}><div className={styles.levelNode}>{state === 'completed' ? <><b>{String(level).padStart(2,'0')}</b><Check size={13}/></> : state === 'current' ? <><Crown size={13}/><b>{String(level).padStart(2,'0')}</b></> : <><b>{String(level).padStart(2,'0')}</b>{state === 'locked' && <LockKeyhole size={10}/>}</>}</div><span>{state === 'completed' ? 'Completed' : state === 'current' ? 'Current' : state === 'next' ? 'Next' : 'Locked'}</span></div>;
+            {levels.map((item) => {
+              const completed = item.level < currentLevel;
+              const current = item.level === currentLevel;
+
+              return (
+                <article
+                  key={item.level}
+                  className={`${styles.roadmapItem} ${
+                    current ? styles.currentRoadmap : ""
+                  } ${completed ? styles.completedRoadmap : ""}`}
+                >
+                  <div className={styles.roadmapBadge}>
+                    <BadgeImage
+                      src={item.badge}
+                      alt={`${item.name} badge`}
+                      className={styles.roadmapImage}
+                    />
+                    {completed && (
+                      <span className={styles.completedIcon}>
+                        <CheckCircle2 size={17} />
+                      </span>
+                    )}
+                    {!completed && !current && (
+                      <span className={styles.lockedIcon}>
+                        <LockKeyhole size={13} />
+                      </span>
+                    )}
+                  </div>
+
+                  <span className={styles.levelCaption}>
+                    LEVEL {String(item.level).padStart(2, "0")}
+                  </span>
+                  <strong>{item.name}</strong>
+                  <span className={styles.levelXP}>
+                    {item.xp.toLocaleString()} XP
+                  </span>
+
+                  {current && (
+                    <span className={styles.currentPill}>YOU ARE HERE</span>
+                  )}
+                  {completed && (
+                    <span className={styles.completedPill}>COMPLETED</span>
+                  )}
+                  {!completed && !current && (
+                    <span className={styles.lockedPill}>LOCKED</span>
+                  )}
+                </article>
+              );
             })}
           </div>
         </section>
-        <footer className={styles.footer}>VELOOP Rewards <span>•</span> Dashboard preview · Demo XP and reward values</footer>
-      </main>
 
-      {gameOpen && <div className={styles.modalBackdrop} role="dialog" aria-modal="true" aria-labelledby="game-title">
-        <div className={styles.gameModal}>
-          <button className={styles.modalClose} onClick={() => setGameOpen(false)} aria-label="Close game"><X size={20}/></button>
-          <span className={styles.modalKicker}><Gamepad2 size={16}/> MINI GAME · DEMO</span>
-          <h2 id="game-title">Coin Catcher</h2>
-          <p>Tap the coin to catch it and build your score.</p>
-          <div className={styles.playField}><div className={styles.gameScore}>Coins caught <strong>{gameScore}</strong></div><button className={styles.catchCoin} onClick={catchCoin} aria-label="Catch coin">🪙</button><span className={styles.fieldRocket}>🚀</span></div>
-          <div className={styles.modalActions}><button className={styles.mutedButton} onClick={() => setGameScore(0)}><RotateCcw size={15}/> Reset</button><button className={styles.goldButton} onClick={finishGame}>Finish &amp; collect XP</button></div>
-          <small className={styles.demoDisclaimer}>Demo game: XP is stored only in this page session.</small>
-        </div>
-      </div>}
-    </div>
+        <section className={styles.section}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.eyebrow}>PLAY • ENGAGE • PROGRESS</span>
+              <h2>Level-Up Arcade</h2>
+              <p>Take a short break and try the coin-catching challenge.</p>
+            </div>
+            <span className={styles.gameTag}><Gamepad2 size={16} /> MINI GAME</span>
+          </div>
+
+          <article className={styles.gameCard}>
+            <div className={styles.gameInfo}>
+              <div className={styles.gameIcon}>
+                <Gamepad2 size={30} />
+              </div>
+              <span className={styles.eyebrow}>SKILL CHALLENGE</span>
+              <h3>Coin Catcher</h3>
+              <p>
+                Tap the coin as many times as you can before the timer ends.
+                Improve your score and see your result.
+              </p>
+
+              <div className={styles.gameRules}>
+                <div><Clock3 size={16} /><span>20 seconds</span></div>
+                <div><Target size={16} /><span>One tap = one point</span></div>
+                <div><Star size={16} /><span>Demo score only</span></div>
+              </div>
+
+              <p className={styles.disclaimer}>
+                This prototype does not award real XP or VEs.
+              </p>
+            </div>
+
+            <div className={styles.gamePlayArea}>
+              {!gameStarted && !gameOver && (
+                <div className={styles.gameStart}>
+                  <div className={styles.coin}>V</div>
+                  <h3>Ready to play?</h3>
+                  <p>Start the timer and catch the coin.</p>
+                  <button className={styles.primaryButton} onClick={startGame}>
+                    Start challenge <ArrowRight size={17} />
+                  </button>
+                </div>
+              )}
+
+              {gameStarted && (
+                <div className={styles.gameActive}>
+                  <div className={styles.gameCounters}>
+                    <div><span>TIME LEFT</span><strong>{seconds}s</strong></div>
+                    <div><span>YOUR SCORE</span><strong>{score}</strong></div>
+                  </div>
+                  <button
+                    className={styles.coinButton}
+                    onClick={catchCoin}
+                    aria-label="Catch coin"
+                  >
+                    V
+                  </button>
+                  <p>Tap the coin!</p>
+                </div>
+              )}
+
+              {gameOver && (
+                <div className={styles.gameResult}>
+                  <Trophy size={38} />
+                  <span className={styles.eyebrow}>CHALLENGE COMPLETE</span>
+                  <h3>{score} points!</h3>
+                  <p>Great effort. Try again to beat your score.</p>
+                  <button className={styles.primaryButton} onClick={resetGame}>
+                    <RotateCcw size={16} /> Play again
+                  </button>
+                </div>
+              )}
+            </div>
+          </article>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.eyebrow}>YOUR NEXT MOVE</span>
+              <h2>Earn more XP & rewards</h2>
+              <p>Explore activities that can help you progress.</p>
+            </div>
+          </div>
+
+          <div className={styles.earningGrid}>
+            <article className={styles.earningCard}>
+              <div className={styles.earningIcon}><Target size={22} /></div>
+              <span className={styles.comingSoon}>COMING SOON</span>
+              <h3>Daily challenge</h3>
+              <p>Complete a daily mission and track your progress.</p>
+              <button
+                className={styles.textButton}
+                onClick={() => setActivityMessage("Daily challenges are a concept and are not active yet.")}
+              >
+                Explore activity <ArrowRight size={16} />
+              </button>
+            </article>
+
+            <article className={styles.earningCard}>
+              <div className={styles.earningIcon}><Gift size={22} /></div>
+              <span className={styles.comingSoon}>COMING SOON</span>
+              <h3>Refer & earn</h3>
+              <p>Invite friends when the referral feature becomes available.</p>
+              <button
+                className={styles.textButton}
+                onClick={() => setActivityMessage("Referral rewards are not connected in this prototype.")}
+              >
+                Explore activity <ArrowRight size={16} />
+              </button>
+            </article>
+
+            <article className={styles.earningCard}>
+              <div className={styles.earningIcon}><Gamepad2 size={22} /></div>
+              <span className={styles.availableTag}>PLAY NOW</span>
+              <h3>Coin Catcher</h3>
+              <p>Play the mini-game and test your reaction speed.</p>
+              <button
+                className={styles.textButton}
+                onClick={() => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Explore dashboard <ArrowRight size={16} />
+              </button>
+            </article>
+          </div>
+
+          {activityMessage && (
+            <div className={styles.notice} role="status">
+              {activityMessage}
+              <button onClick={() => setActivityMessage("")}>Dismiss</button>
+            </div>
+          )}
+        </section>
+
+        <section className={styles.activitySection}>
+          <div>
+            <span className={styles.eyebrow}>KEEP MOVING FORWARD</span>
+            <h2>Your next level is within reach.</h2>
+            <p>
+              You need {xpRemaining.toLocaleString()} more XP to reach Level{" "}
+              {currentLevel + 1}.
+            </p>
+          </div>
+          <div className={styles.activityIcon}><Zap size={28} /></div>
+        </section>
+
+        <footer className={styles.footer}>
+          <span>VELOOP REWARDS</span>
+          <span>Frontend prototype · Demo data only</span>
+        </footer>
+      </div>
+    </main>
   );
 }
