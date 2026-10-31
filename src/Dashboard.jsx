@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import "./Dashboard.css";
+import "./Dashboard.module.css";
 
 const levels = [
   { level: 1, name: "Starter", symbol: "★" },
