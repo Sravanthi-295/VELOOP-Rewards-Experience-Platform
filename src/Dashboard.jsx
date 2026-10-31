@@ -14,17 +14,172 @@ const levels = [
 const currentXP = 4200;
 const currentLevel = 4;
 const nextLevelXP = 5000;
+const progress = Math.min(100, Math.round((currentXP / nextLevelXP) * 100));
 
-const progress = Math.min(
-  100,
-  Math.round((currentXP / nextLevelXP) * 100)
-);
+function ChampionBadge() {
+  return (
+    <svg viewBox="0 0 300 320" className={styles.championBadge}>
+      <defs>
+        <linearGradient id="badgeGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fff2a8" />
+          <stop offset="45%" stopColor="#ffc23e" />
+          <stop offset="100%" stopColor="#a85b08" />
+        </linearGradient>
+        <linearGradient id="badgeShield" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#493078" />
+          <stop offset="100%" stopColor="#171127" />
+        </linearGradient>
+      </defs>
+
+      <path
+        d="M150 15 L180 43 L220 35 L235 75 L275 95 L258 135 L282 165 L255 198 L260 238 L218 250 L200 290 L160 275 L150 310 L140 275 L100 290 L82 250 L40 238 L45 198 L18 165 L42 135 L25 95 L65 75 L80 35 L120 43 Z"
+        fill="url(#badgeGold)"
+        stroke="#ffe49a"
+        strokeWidth="5"
+      />
+
+      <path
+        d="M150 55 L225 88 L215 190 Q195 240 150 260 Q105 240 85 190 L75 88 Z"
+        fill="url(#badgeShield)"
+        stroke="#ffdf80"
+        strokeWidth="6"
+      />
+
+      <path
+        d="M105 80 L120 48 L150 68 L180 48 L195 80 L183 100 L117 100 Z"
+        fill="url(#badgeGold)"
+        stroke="#fff0a8"
+        strokeWidth="3"
+      />
+
+      <circle cx="120" cy="48" r="6" fill="#fff3b6" />
+      <circle cx="150" cy="68" r="6" fill="#fff3b6" />
+      <circle cx="180" cy="48" r="6" fill="#fff3b6" />
+
+      <text
+        x="150"
+        y="165"
+        textAnchor="middle"
+        fill="#ffcf58"
+        fontSize="66"
+        fontWeight="bold"
+      >
+        04
+      </text>
+
+      <path
+        d="M40 185 L260 185 L238 230 L62 230 Z"
+        fill="url(#badgeGold)"
+        stroke="#fff0a8"
+        strokeWidth="3"
+      />
+
+      <text
+        x="150"
+        y="215"
+        textAnchor="middle"
+        fill="#29152c"
+        fontSize="23"
+        fontWeight="bold"
+      >
+        CHAMPION
+      </text>
+
+      <text
+        x="150"
+        y="263"
+        textAnchor="middle"
+        fill="#ffe08a"
+        fontSize="23"
+      >
+        ★ ★ ★
+      </text>
+    </svg>
+  );
+}
+
+function RewardGift() {
+  return (
+    <svg viewBox="0 0 320 300" className={styles.rewardGift}>
+      <defs>
+        <linearGradient id="giftGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fff3ad" />
+          <stop offset="48%" stopColor="#ffc33f" />
+          <stop offset="100%" stopColor="#b36a0c" />
+        </linearGradient>
+        <linearGradient id="giftBox" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#463064" />
+          <stop offset="100%" stopColor="#171027" />
+        </linearGradient>
+      </defs>
+
+      <ellipse
+        cx="160"
+        cy="268"
+        rx="125"
+        ry="17"
+        fill="none"
+        stroke="#ffc84f"
+        strokeWidth="4"
+      />
+
+      <ellipse
+        cx="160"
+        cy="270"
+        rx="95"
+        ry="9"
+        fill="#e5a42f"
+        opacity="0.25"
+      />
+
+      <path
+        d="M75 135 L245 135 L232 245 L88 245 Z"
+        fill="url(#giftBox)"
+        stroke="url(#giftGold)"
+        strokeWidth="5"
+      />
+
+      <path
+        d="M145 135 L175 135 L175 245 L145 245 Z"
+        fill="url(#giftGold)"
+      />
+
+      <rect
+        x="62"
+        y="112"
+        width="196"
+        height="40"
+        rx="8"
+        fill="url(#giftBox)"
+        stroke="url(#giftGold)"
+        strokeWidth="5"
+      />
+
+      <path
+        d="M160 112 C75 85 92 35 128 58 Q150 76 160 112 C170 76 192 35 228 58 Q245 88 160 112"
+        fill="url(#giftGold)"
+        stroke="#fff0a8"
+        strokeWidth="5"
+      />
+
+      <text
+        x="160"
+        y="218"
+        textAnchor="middle"
+        fontSize="58"
+        fontWeight="bold"
+        fill="url(#giftGold)"
+      >
+        V
+      </text>
+    </svg>
+  );
+}
 
 export default function Dashboard() {
   const [gameState, setGameState] = useState("ready");
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
-
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -52,115 +207,132 @@ export default function Dashboard() {
           setGameState("finished");
           return 0;
         }
-
         return time - 1;
       });
     }, 1000);
   }
 
-  function catchCoin() {
-    if (gameState === "playing") {
-      setScore((value) => value + 1);
-    }
-  }
-
   return (
     <main className={styles.dashboard}>
-      {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.brand}>
-          <span className={styles.brandIcon}>V</span>
-          <span>VELOOP REWARDS</span>
-        </div>
-
-        <div className={styles.headerRight}>
-          <span className={styles.demoTag}>IN PROGRESS</span>
-          <span className={styles.avatar}>S</span>
-        </div>
-      </header>
-
       <div className={styles.container}>
-        {/* Welcome */}
-        <section className={styles.welcome}>
-          <h1>Welcome to VELOOP Rewards!</h1>
-          <p>
-            Track your progress, earn rewards and level up
-            your journey.
-          </p>
-        </section>
+        {/* Header */}
+        <header className={styles.header}>
+          <div className={styles.brand}>
+            <span className={styles.brandIcon}>V</span>
+            <span className={styles.brandText}>
+              <strong>VELOOP</strong>
+              <small>REWARDS</small>
+            </span>
+          </div>
 
-        {/* Level and Reward Cards */}
-        <section className={styles.heroGrid}>
-          <div className={styles.levelCard}>
-            <h2>Your Current Level</h2>
+          <div className={styles.headerRight}>
+            <span className={styles.demoTag}>● IN PROGRESS</span>
+            <span className={styles.avatar}>S</span>
+          </div>
+        </header>
 
-            <div className={styles.levelNumber}>
-              {String(currentLevel).padStart(2, "0")}
+        {/* Current Level */}
+        <section className={styles.levelCard}>
+          <div className={styles.topLine}>
+            <span className={styles.sectionLabel}>YOUR CURRENT LEVEL</span>
+            <span className={styles.progressStatus}>● IN PROGRESS</span>
+          </div>
+
+          <div className={styles.championRow}>
+            <div className={styles.championArtwork}>
+              <ChampionBadge />
             </div>
 
-            <div className={styles.levelName}>Champion ♛</div>
-
-            <p className={styles.levelDescription}>
-              You are making great progress. Keep going
-              to unlock your next reward!
-            </p>
-
-            <div className={styles.levelStats}>
-              <span>⚡ Total XP: {currentXP.toLocaleString()}</span>
-              <span>🏆 Level {currentLevel}</span>
+            <div className={styles.championInfo}>
+              <span className={styles.levelNumber}>LEVEL 04</span>
+              <h1>Champion</h1>
+              <p>You are making great progress.</p>
             </div>
           </div>
 
-          <div className={styles.rewardCard}>
-            <h2>Your Next Reward</h2>
+          {/* XP Progress */}
+          <div className={styles.xpSection}>
+            <div className={styles.xpHeading}>
+              <span>⚡ XP PROGRESS</span>
+              <strong>
+                {currentXP.toLocaleString()} / {nextLevelXP.toLocaleString()}
+              </strong>
+            </div>
 
-            <div className={styles.rewardAmount}>500 VEs</div>
-
-            <p className={styles.rewardDescription}>
-              Keep earning XP to reach your next milestone.
-            </p>
-
-            <span className={styles.statusPending}>
-              🔒 Unlock at Level 5
-            </span>
-
-            <div className={styles.rewardProgress}>
+            <div className={styles.progressTrack}>
               <div
-                className={styles.rewardProgressBar}
+                className={styles.progressFill}
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            <p className={styles.rewardDescription}>
-              {progress}% progress towards your next level
-            </p>
+            <div className={styles.progressMeta}>
+              <span>{progress}% completed</span>
+              <strong>{(nextLevelXP - currentXP).toLocaleString()} XP to go</strong>
+            </div>
+          </div>
+
+          {/* Statistics */}
+          <div className={styles.stats}>
+            <div className={styles.stat}>
+              <span>⚡</span>
+              <small>Total XP</small>
+              <strong>{currentXP.toLocaleString()}</strong>
+            </div>
+
+            <div className={styles.stat}>
+              <span>🏆</span>
+              <small>Current level</small>
+              <strong>{currentLevel}</strong>
+            </div>
+
+            <div className={styles.stat}>
+              <span>◎</span>
+              <small>Next goal</small>
+              <strong>Level 5</strong>
+            </div>
           </div>
         </section>
 
-        {/* XP Progress */}
-        <section className={styles.levelCard}>
-          <h2>⚡ XP Progress</h2>
-
-          <div className={styles.levelStats}>
-            <strong>{currentXP.toLocaleString()} XP</strong>
-            <strong>{nextLevelXP.toLocaleString()} XP</strong>
+        {/* Next Reward */}
+        <section className={styles.rewardCard}>
+          <div className={styles.rewardHeading}>
+            <span className={styles.sectionLabel}>YOUR NEXT REWARD</span>
+            <span className={styles.rewardSmallIcon}>♕</span>
           </div>
 
-          <div className={styles.rewardProgress}>
+          <div className={styles.rewardArtwork}>
+            <RewardGift />
+          </div>
+
+          <div className={styles.rewardTitle}>LEVEL 5 REWARD</div>
+          <h2>500 VEs</h2>
+
+          <p className={styles.rewardDescription}>
+            Keep earning XP to reach your next milestone.
+          </p>
+
+          <div className={styles.rewardBottom}>
+            <span>Unlock progress</span>
+            <strong>{progress}%</strong>
+          </div>
+
+          <div className={styles.progressTrack}>
             <div
-              className={styles.rewardProgressBar}
+              className={styles.progressFill}
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          <p className={styles.levelDescription}>
-            {nextLevelXP - currentXP} XP remaining to reach Level 5.
-          </p>
+          <span className={styles.unlockLabel}>🔒 Unlock at Level 5</span>
         </section>
 
-        {/* Level Roadmap */}
+        {/* Level Progression */}
         <section className={styles.roadmap}>
-          <h2>✦ Level Progression</h2>
+          <div className={styles.cardHeading}>
+            <h2>✦ LEVEL PROGRESSION</h2>
+            <span>YOUR JOURNEY</span>
+          </div>
 
           <div className={styles.roadmapList}>
             {levels.map((item) => {
@@ -170,35 +342,16 @@ export default function Dashboard() {
 
               return (
                 <div
-                  key={item.level}
                   className={`${styles.roadmapItem} ${
                     active ? styles.currentRoadmap : ""
                   } ${completed ? styles.completedRoadmap : ""}`}
+                  key={item.level}
                 >
-                  <div className={styles.earningIcon}>
+                  <div className={styles.roadmapBadge}>
                     {locked ? "🔒" : item.symbol}
                   </div>
-
-                  <h3>Level {item.level}</h3>
-                  <p>{item.name}</p>
-
-                  {active && (
-                    <span className={styles.status}>
-                      Current Level
-                    </span>
-                  )}
-
-                  {completed && (
-                    <span className={styles.statusSuccess}>
-                      Completed
-                    </span>
-                  )}
-
-                  {locked && (
-                    <span className={styles.statusPending}>
-                      Locked
-                    </span>
-                  )}
+                  <strong>Level {item.level}</strong>
+                  <small>{item.name}</small>
                 </div>
               );
             })}
@@ -207,91 +360,65 @@ export default function Dashboard() {
 
         {/* Mini Game */}
         <section className={styles.gameCard}>
-          <h2>🎮 Level-Up Arcade</h2>
+          <div className={styles.gameIcon}>🎮</div>
 
-          <p>
-            Catch coins, earn rewards and enjoy the game!
-          </p>
-
-          <div className={styles.gamePlayArea}>
-            <div className={styles.gameIcon}>🪙</div>
+          <div className={styles.gameContent}>
+            <span className={styles.gameKicker}>PLAY · EARN · LEVEL UP</span>
+            <h2>Level-Up Arcade</h2>
+            <p>Catch coins, earn rewards and boost your XP!</p>
 
             {gameState === "ready" && (
-              <>
-                <h3>Ready to play?</h3>
-                <p>You have 15 seconds to catch as many coins as possible.</p>
-
-                <button
-                  className={styles.gameButton}
-                  onClick={startGame}
-                >
-                  Start Game
-                </button>
-              </>
+              <button className={styles.gameButton} onClick={startGame}>
+                Play Now ›
+              </button>
             )}
 
             {gameState === "playing" && (
-              <>
-                <div className={styles.gameScore}>
-                  {score} Coins
-                </div>
-
-                <p>Time remaining: {timeLeft} seconds</p>
-
+              <div className={styles.gameControls}>
+                <strong>Time: {timeLeft}s · Coins: {score}</strong>
                 <button
                   className={styles.gameButton}
-                  onClick={catchCoin}
+                  onClick={() => setScore((value) => value + 1)}
                 >
                   Catch Coin ⚡
                 </button>
-              </>
+              </div>
             )}
 
             {gameState === "finished" && (
-              <>
-                <h3>Game Over!</h3>
-
-                <div className={styles.gameScore}>
-                  {score} Coins
-                </div>
-
-                <p>Great effort! Try again to beat your score.</p>
-
-                <button
-                  className={styles.gameButton}
-                  onClick={startGame}
-                >
+              <div className={styles.gameControls}>
+                <strong>Time's up! You caught {score} coins.</strong>
+                <button className={styles.gameButton} onClick={startGame}>
                   Play Again ↻
                 </button>
-              </>
+              </div>
             )}
           </div>
+
+          <div className={styles.floatingCoin}>V</div>
         </section>
 
         {/* Earning Opportunities */}
         <section className={styles.earningCard}>
-          <h2>✧ More Ways to Earn</h2>
-
-          <p className={styles.rewardDescription}>
-            Complete activities and keep moving towards
-            your next level.
-          </p>
+          <span className={styles.sectionLabel}>✧ KEEP YOUR MOMENTUM</span>
+          <h2>More Ways to Earn</h2>
+          <p>Complete activities and keep moving towards your next level.</p>
 
           <div className={styles.earningGrid}>
             <div className={styles.earningItem}>
-              <div className={styles.earningIcon}>🎯</div>
+              <span>🎯</span>
               <h3>Complete Challenges</h3>
               <p>Finish challenges to earn more XP.</p>
             </div>
 
             <div className={styles.earningItem}>
-              <div className={styles.earningIcon}>🎮</div>
+              <span>🎮</span>
               <h3>Play Games</h3>
               <p>Enjoy games and improve your score.</p>
             </div>
 
             <div className={styles.earningItem}>
-              <div className={styles.earningIcon}>🏆</div>
+              <span>🏆</span>
               <h3>Reach Milestones</h3>
               <p>Unlock new levels and rewards.</p>
             </div>
@@ -303,26 +430,25 @@ export default function Dashboard() {
           <h2>Recent Activity</h2>
 
           <div className={styles.activityItem}>
-            <div className={styles.activityInfo}>
-              <h3>Current Level Achieved</h3>
+            <div>
+              <strong>Current Level Achieved</strong>
               <p>You reached Champion Level.</p>
             </div>
-            <span className={styles.activityPoints}>Level 4</span>
+            <strong>Level 4</strong>
           </div>
 
           <div className={styles.activityItem}>
-            <div className={styles.activityInfo}>
-              <h3>XP Progress</h3>
+            <div>
+              <strong>XP Progress</strong>
               <p>Keep going to reach the next milestone.</p>
             </div>
-            <span className={styles.activityPoints}>4,200 XP</span>
+            <strong>4,200 XP</strong>
           </div>
         </section>
 
-        {/* Footer */}
         <footer className={styles.footer}>
-          <p>© 2026 VELOOP REWARDS</p>
-          <p>LEVEL UP YOUR JOURNEY</p>
+          <span>© 2026 VELOOP REWARDS</span>
+          <span>LEVEL UP YOUR JOURNEY</span>
         </footer>
       </div>
     </main>
