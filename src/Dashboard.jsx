@@ -1,460 +1,344 @@
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  Trophy,
-  Zap,
-  Gift,
-  Gamepad2,
-  Target,
-  Clock3,
-  LockKeyhole,
-  CheckCircle2,
-  ArrowRight,
-  Star,
-  RotateCcw,
-  Flame,
-  Info,
+  Activity, ArrowRight, Award, Check, ChevronRight,
+  Crown, Gamepad2, Gift, LockKeyhole, Medal,
+  Shield, Sparkles, Star, Target, Trophy, Zap
 } from "lucide-react";
 
 import styles from "./Dashboard.module.css";
 
 const levels = [
-  { level: 1, name: "Starter", xp: 0, badge: "/badges/level-1.png" },
-  { level: 2, name: "Explorer", xp: 500, badge: "/badges/level-2.png" },
-  { level: 3, name: "Achiever", xp: 1500, badge: "/badges/level-3.png" },
-  { level: 4, name: "Champion", xp: 3000, badge: "/badges/level-4.png" },
-  { level: 5, name: "Elite", xp: 5000, badge: "/badges/level-5.png" },
-  { level: 6, name: "Legend", xp: 8000, badge: "/badges/level-6.png" },
+  { level: 1, name: "Starter", tone: "bronze", icon: Star },
+  { level: 2, name: "Explorer", tone: "silver", icon: Shield },
+  { level: 3, name: "Achiever", tone: "gold", icon: Medal },
+  { level: 4, name: "Champion", tone: "champion", icon: Crown },
+  { level: 5, name: "Elite", tone: "platinum", icon: Trophy },
+  { level: 6, name: "Legend", tone: "legend", icon: Crown },
 ];
 
-// DEMO DATA ONLY: replace with approved values when available.
 const currentXP = 4200;
 const currentLevel = 4;
 const nextLevelXP = 5000;
-const demoReward = "500 VEs";
+const progress = Math.round((currentXP / nextLevelXP) * 100);
 
-function BadgeImage({ src, alt, className }) {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <div className={`${styles.badgeFallback} ${className || ""}`}>
-        <Trophy size={28} />
-      </div>
-    );
-  }
+function LevelBadge({ item, active = false, locked = false, large = false }) {
+  const Icon = item.icon;
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      onError={() => setFailed(true)}
-    />
+    <div className={`${styles.badgeWrap} ${large ? styles.badgeLarge : ""}`}>
+      <div className={`${styles.badge} ${styles[item.tone]} ${active ? styles.badgeActive : ""}`}>
+        <span className={styles.badgeShine} />
+        <span className={styles.badgeNumber}>
+          {String(item.level).padStart(2, "0")}
+        </span>
+        <Icon className={styles.badgeIcon} />
+
+        {active && (
+          <span className={styles.badgeCrown}>
+            <Crown size={18} />
+          </span>
+        )}
+      </div>
+
+      {active && <span className={styles.badgeRibbon}>CHAMPION</span>}
+
+      {locked && (
+        <span className={styles.lockDot}>
+          <LockKeyhole size={12} />
+        </span>
+      )}
+
+      {!locked && !active && item.level < currentLevel && (
+        <span className={styles.checkDot}>
+          <Check size={13} />
+        </span>
+      )}
+    </div>
+  );
+}
+
+function GiftIllustration() {
+  return (
+    <div className={styles.giftStage}>
+      <div className={styles.giftHalo} />
+
+      <div className={styles.giftBox}>
+        <div className={styles.giftLid}>
+          <span className={styles.ribbonLoopLeft} />
+          <span className={styles.ribbonLoopRight} />
+          <span className={styles.ribbonKnot} />
+        </div>
+
+        <div className={styles.giftBody}>
+          <span className={styles.giftRibbonVertical} />
+          <span className={styles.giftRibbonHorizontal} />
+          <span className={styles.giftV}>V</span>
+        </div>
+      </div>
+
+      <div className={styles.giftBase} />
+      <Sparkles className={styles.giftSparkleOne} />
+      <Sparkles className={styles.giftSparkleTwo} />
+    </div>
   );
 }
 
 export default function Dashboard() {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameState, setGameState] = useState("ready");
   const [score, setScore] = useState(0);
-  const [seconds, setSeconds] = useState(20);
-  const [activityMessage, setActivityMessage] = useState("");
+  const [timeLeft, setTimeLeft] = useState(15);
 
-  const progress = Math.min(
-    100,
-    Math.round((currentXP / nextLevelXP) * 100)
-  );
+  const timerRef = useRef(null);
 
-  const xpRemaining = Math.max(0, nextLevelXP - currentXP);
+  useEffect(() => {
+    return () => clearInterval(timerRef.current);
+  }, []);
 
-  function startGame() {
+  const startGame = () => {
+    clearInterval(timerRef.current);
+
     setScore(0);
-    setSeconds(20);
-    setGameOver(false);
-    setGameStarted(true);
+    setTimeLeft(15);
+    setGameState("playing");
 
-    let remaining = 20;
+    timerRef.current = setInterval(() => {
+      setTimeLeft((time) => {
+        if (time <= 1) {
+          clearInterval(timerRef.current);
+          setGameState("finished");
+          return 0;
+        }
 
-    const timer = setInterval(() => {
-      remaining -= 1;
-      setSeconds(remaining);
-
-      if (remaining <= 0) {
-        clearInterval(timer);
-        setGameStarted(false);
-        setGameOver(true);
-      }
+        return time - 1;
+      });
     }, 1000);
-  }
-
-  function catchCoin() {
-    if (gameStarted && seconds > 0) {
-      setScore((previous) => previous + 1);
-    }
-  }
-
-  function resetGame() {
-    setGameStarted(false);
-    setGameOver(false);
-    setScore(0);
-    setSeconds(20);
-  }
+  };
 
   return (
-    <main className={styles.dashboard}>
-      <header className={styles.header}>
-        <a href="#home" className={styles.brand}>
-          <span className={styles.brandIcon}>V</span>
-          <span>VELOOP <small>REWARDS</small></span>
-        </a>
+    <main className={styles.page}>
+      <div className={styles.ambientGlow} />
 
-        <div className={styles.headerRight}>
-          <span className={styles.demoTag}>DEMO EXPERIENCE</span>
-          <div className={styles.avatar}>S</div>
-        </div>
-      </header>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <a className={styles.brand} href="/">
+            <span className={styles.brandMark}>V</span>
+            <span>
+              <strong>VELOOP</strong>
+              <small>REWARDS</small>
+            </span>
+          </a>
 
-      <div className={styles.container} id="home">
-        <section className={styles.welcome}>
-          <div>
-            <span className={styles.eyebrow}>YOUR REWARDS JOURNEY</span>
-            <h1>Every step takes you <span>higher.</span></h1>
-            <p>
-              Earn XP, explore challenges, and discover what awaits at your
-              next level.
-            </p>
+          <div className={styles.headerRight}>
+            <span className={styles.status}>
+              <i /> IN PROGRESS
+            </span>
+            <div className={styles.avatar}>S</div>
+          </div>
+        </header>
+
+        <section className={styles.hero}>
+          <div className={styles.heroBadge}>
+            <div className={`${styles.orbit} ${styles.orbitOne}`} />
+            <div className={`${styles.orbit} ${styles.orbitTwo}`} />
+
+            <LevelBadge item={levels[3]} active large />
+
+            <span className={styles.heroSparkle}>
+              <Sparkles />
+            </span>
           </div>
 
-          <div className={styles.streak}>
-            <Flame size={22} />
-            <div>
-              <strong>Keep going!</strong>
-              <span>Your next achievement awaits.</span>
-            </div>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>
+              <Crown size={16} /> YOUR CURRENT LEVEL
+            </span>
+
+            <p className={styles.levelNumber}>LEVEL 04</p>
+            <h1>Champion</h1>
+
+            <p className={styles.subText}>
+              You are making great progress. Keep going to unlock your next reward.
+            </p>
           </div>
         </section>
 
-        <section className={styles.heroGrid}>
-          <article className={styles.levelCard}>
-            <div className={styles.cardTop}>
-              <span className={styles.eyebrow}>YOUR CURRENT LEVEL</span>
-              <span className={styles.status}>
-                <span /> IN PROGRESS
-              </span>
-            </div>
+        <section className={styles.xpSection}>
+          <div className={styles.sectionLine}>
+            <span className={styles.sectionLabel}>
+              <Zap /> XP PROGRESS
+            </span>
 
-            <div className={styles.levelMain}>
-              <BadgeImage
-                src="/badges/level-4.png"
-                alt="Current level badge"
-                className={styles.heroBadge}
-              />
+            <strong>
+              {currentXP.toLocaleString()}{" "}
+              <span>/ {nextLevelXP.toLocaleString()}</span>
+            </strong>
+          </div>
 
-              <div>
-                <span className={styles.levelNumber}>
-                  LEVEL {String(currentLevel).padStart(2, "0")}
-                </span>
-                <h2>Champion</h2>
-                <p>You are making great progress.</p>
-              </div>
-            </div>
-
-            <div className={styles.xpHeading}>
-              <span><Zap size={16} /> XP PROGRESS</span>
-              <strong>{currentXP.toLocaleString()} / {nextLevelXP.toLocaleString()}</strong>
-            </div>
-
+          <div className={styles.progressTrack}>
             <div
-              className={styles.progressTrack}
-              role="progressbar"
-              aria-label="XP progress to next level"
-              aria-valuenow={progress}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            >
-              <div
-                className={styles.progressFill}
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-
-            <div className={styles.progressBottom}>
-              <span>{progress}% completed</span>
-              <strong>{xpRemaining.toLocaleString()} XP to go</strong>
-            </div>
-
-            <div className={styles.levelStats}>
-              <div>
-                <Zap size={18} />
-                <span>Total XP</span>
-                <strong>{currentXP.toLocaleString()}</strong>
-              </div>
-              <div>
-                <Trophy size={18} />
-                <span>Current level</span>
-                <strong>{currentLevel}</strong>
-              </div>
-              <div>
-                <Target size={18} />
-                <span>Next goal</span>
-                <strong>Level {currentLevel + 1}</strong>
-              </div>
-            </div>
-          </article>
-
-          <article className={styles.rewardCard}>
-            <div className={styles.rewardTop}>
-              <span className={styles.eyebrow}>YOUR NEXT REWARD</span>
-              <Gift size={21} />
-            </div>
-
-            <div className={styles.rewardVisual}>
-              <div className={styles.rewardGlow}>
-                <Gift size={52} strokeWidth={1.3} />
-              </div>
-              <span className={styles.lockIcon}>
-                <LockKeyhole size={16} />
-              </span>
-            </div>
-
-            <span className={styles.rewardLabel}>LEVEL {currentLevel + 1} REWARD</span>
-            <h2>{demoReward}</h2>
-            <p>Keep earning XP to reach your next milestone.</p>
-
-            <div className={styles.rewardProgress}>
-              <div>
-                <span>Unlock progress</span>
-                <strong>{progress}%</strong>
-              </div>
-              <div className={styles.progressTrack}>
-                <div
-                  className={styles.progressFill}
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-
-            <p className={styles.disclaimer}>
-              <Info size={14} /> Illustrative reward only. Official reward
-              values are not connected.
-            </p>
-          </article>
-        </section>
-
-        <section className={styles.section}>
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>YOUR JOURNEY</span>
-              <h2>Level progression</h2>
-              <p>Look how far you have come. Your next goal is waiting.</p>
-            </div>
+              className={styles.progressFill}
+              style={{ width: `${progress}%` }}
+            />
           </div>
 
-          <div className={styles.roadmap}>
-            {levels.map((item) => {
-              const completed = item.level < currentLevel;
-              const current = item.level === currentLevel;
+          <div className={styles.progressMeta}>
+            <span><b>{progress}%</b> completed</span>
+            <strong>{(nextLevelXP - currentXP).toLocaleString()} XP to go</strong>
+          </div>
+        </section>
+
+        <section className={styles.stats}>
+          <div className={styles.stat}>
+            <Zap />
+            <span>Total XP</span>
+            <strong>{currentXP.toLocaleString()}</strong>
+          </div>
+
+          <div className={styles.stat}>
+            <Trophy />
+            <span>Current Level</span>
+            <strong>{currentLevel}</strong>
+          </div>
+
+          <div className={styles.stat}>
+            <Target />
+            <span>Next Goal</span>
+            <strong>Level 5</strong>
+          </div>
+        </section>
+
+        <section className={styles.rewardCard}>
+          <div className={styles.rewardCopy}>
+            <span className={styles.sectionLabel}>
+              <Gift /> YOUR NEXT REWARD
+            </span>
+
+            <h2>500 VEs</h2>
+
+            <p>
+              Keep earning XP to reach your next milestone.
+            </p>
+
+            <span className={styles.unlockPill}>
+              <LockKeyhole /> Unlock at Level 5
+            </span>
+          </div>
+
+          <GiftIllustration />
+        </section>
+
+        <section className={styles.progressionCard}>
+          <div className={styles.cardHeading}>
+            <h2><Activity /> LEVEL PROGRESSION</h2>
+            <span>YOUR JOURNEY</span>
+          </div>
+
+          <div className={styles.levelTrack}>
+            {levels.map((item, index) => {
+              const locked = item.level > currentLevel;
+              const active = item.level === currentLevel;
 
               return (
-                <article
-                  key={item.level}
-                  className={`${styles.roadmapItem} ${
-                    current ? styles.currentRoadmap : ""
-                  } ${completed ? styles.completedRoadmap : ""}`}
-                >
-                  <div className={styles.roadmapBadge}>
-                    <BadgeImage
-                      src={item.badge}
-                      alt={`${item.name} badge`}
-                      className={styles.roadmapImage}
+                <div className={styles.levelStep} key={item.level}>
+                  <LevelBadge
+                    item={item}
+                    active={active}
+                    locked={locked}
+                  />
+
+                  <strong className={active ? styles.activeLevelName : ""}>
+                    Level {item.level}
+                  </strong>
+
+                  <span>{item.name}</span>
+
+                  {index < levels.length - 1 && (
+                    <div
+                      className={`${styles.connector} ${
+                        item.level < currentLevel ? styles.connectorDone : ""
+                      }`}
                     />
-                    {completed && (
-                      <span className={styles.completedIcon}>
-                        <CheckCircle2 size={17} />
-                      </span>
-                    )}
-                    {!completed && !current && (
-                      <span className={styles.lockedIcon}>
-                        <LockKeyhole size={13} />
-                      </span>
-                    )}
-                  </div>
-
-                  <span className={styles.levelCaption}>
-                    LEVEL {String(item.level).padStart(2, "0")}
-                  </span>
-                  <strong>{item.name}</strong>
-                  <span className={styles.levelXP}>
-                    {item.xp.toLocaleString()} XP
-                  </span>
-
-                  {current && (
-                    <span className={styles.currentPill}>YOU ARE HERE</span>
                   )}
-                  {completed && (
-                    <span className={styles.completedPill}>COMPLETED</span>
-                  )}
-                  {!completed && !current && (
-                    <span className={styles.lockedPill}>LOCKED</span>
-                  )}
-                </article>
+                </div>
               );
             })}
           </div>
         </section>
 
-        <section className={styles.section}>
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>PLAY • ENGAGE • PROGRESS</span>
-              <h2>Level-Up Arcade</h2>
-              <p>Take a short break and try the coin-catching challenge.</p>
-            </div>
-            <span className={styles.gameTag}><Gamepad2 size={16} /> MINI GAME</span>
+        <section className={styles.gameCard}>
+          <div className={styles.gameIcon}>
+            <Gamepad2 />
           </div>
 
-          <article className={styles.gameCard}>
-            <div className={styles.gameInfo}>
-              <div className={styles.gameIcon}>
-                <Gamepad2 size={30} />
+          <div className={styles.gameContent}>
+            <span className={styles.gameKicker}>
+              PLAY · EARN · LEVEL UP
+            </span>
+
+            <h2>Level-Up Arcade</h2>
+            <p>Catch coins, earn rewards and boost your XP!</p>
+
+            {gameState === "ready" && (
+              <button className={styles.playButton} onClick={startGame}>
+                Play Now <ChevronRight />
+              </button>
+            )}
+
+            {gameState === "playing" && (
+              <div className={styles.gameControls}>
+                <span className={styles.gameScore}>
+                  Time: {timeLeft}s · Coins: {score}
+                </span>
+
+                <button
+                  className={styles.playButton}
+                  onClick={() => setScore((s) => s + 1)}
+                >
+                  Catch coin <Zap />
+                </button>
               </div>
-              <span className={styles.eyebrow}>SKILL CHALLENGE</span>
-              <h3>Coin Catcher</h3>
-              <p>
-                Tap the coin as many times as you can before the timer ends.
-                Improve your score and see your result.
-              </p>
+            )}
 
-              <div className={styles.gameRules}>
-                <div><Clock3 size={16} /><span>20 seconds</span></div>
-                <div><Target size={16} /><span>One tap = one point</span></div>
-                <div><Star size={16} /><span>Demo score only</span></div>
+            {gameState === "finished" && (
+              <div className={styles.gameControls}>
+                <span className={styles.gameScore}>
+                  Time's up! You caught {score} coins.
+                </span>
+
+                <button className={styles.playButton} onClick={startGame}>
+                  Play again <ArrowRight />
+                </button>
               </div>
+            )}
+          </div>
 
-              <p className={styles.disclaimer}>
-                This prototype does not award real XP or VEs.
-              </p>
-            </div>
-
-            <div className={styles.gamePlayArea}>
-              {!gameStarted && !gameOver && (
-                <div className={styles.gameStart}>
-                  <div className={styles.coin}>V</div>
-                  <h3>Ready to play?</h3>
-                  <p>Start the timer and catch the coin.</p>
-                  <button className={styles.primaryButton} onClick={startGame}>
-                    Start challenge <ArrowRight size={17} />
-                  </button>
-                </div>
-              )}
-
-              {gameStarted && (
-                <div className={styles.gameActive}>
-                  <div className={styles.gameCounters}>
-                    <div><span>TIME LEFT</span><strong>{seconds}s</strong></div>
-                    <div><span>YOUR SCORE</span><strong>{score}</strong></div>
-                  </div>
-                  <button
-                    className={styles.coinButton}
-                    onClick={catchCoin}
-                    aria-label="Catch coin"
-                  >
-                    V
-                  </button>
-                  <p>Tap the coin!</p>
-                </div>
-              )}
-
-              {gameOver && (
-                <div className={styles.gameResult}>
-                  <Trophy size={38} />
-                  <span className={styles.eyebrow}>CHALLENGE COMPLETE</span>
-                  <h3>{score} points!</h3>
-                  <p>Great effort. Try again to beat your score.</p>
-                  <button className={styles.primaryButton} onClick={resetGame}>
-                    <RotateCcw size={16} /> Play again
-                  </button>
-                </div>
-              )}
-            </div>
-          </article>
+          <div className={styles.floatingCoin}>V</div>
         </section>
 
-        <section className={styles.section}>
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>YOUR NEXT MOVE</span>
-              <h2>Earn more XP & rewards</h2>
-              <p>Explore activities that can help you progress.</p>
-            </div>
-          </div>
-
-          <div className={styles.earningGrid}>
-            <article className={styles.earningCard}>
-              <div className={styles.earningIcon}><Target size={22} /></div>
-              <span className={styles.comingSoon}>COMING SOON</span>
-              <h3>Daily challenge</h3>
-              <p>Complete a daily mission and track your progress.</p>
-              <button
-                className={styles.textButton}
-                onClick={() => setActivityMessage("Daily challenges are a concept and are not active yet.")}
-              >
-                Explore activity <ArrowRight size={16} />
-              </button>
-            </article>
-
-            <article className={styles.earningCard}>
-              <div className={styles.earningIcon}><Gift size={22} /></div>
-              <span className={styles.comingSoon}>COMING SOON</span>
-              <h3>Refer & earn</h3>
-              <p>Invite friends when the referral feature becomes available.</p>
-              <button
-                className={styles.textButton}
-                onClick={() => setActivityMessage("Referral rewards are not connected in this prototype.")}
-              >
-                Explore activity <ArrowRight size={16} />
-              </button>
-            </article>
-
-            <article className={styles.earningCard}>
-              <div className={styles.earningIcon}><Gamepad2 size={22} /></div>
-              <span className={styles.availableTag}>PLAY NOW</span>
-              <h3>Coin Catcher</h3>
-              <p>Play the mini-game and test your reaction speed.</p>
-              <button
-                className={styles.textButton}
-                onClick={() => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                Explore dashboard <ArrowRight size={16} />
-              </button>
-            </article>
-          </div>
-
-          {activityMessage && (
-            <div className={styles.notice} role="status">
-              {activityMessage}
-              <button onClick={() => setActivityMessage("")}>Dismiss</button>
-            </div>
-          )}
-        </section>
-
-        <section className={styles.activitySection}>
+        <section className={styles.earnCard}>
           <div>
-            <span className={styles.eyebrow}>KEEP MOVING FORWARD</span>
-            <h2>Your next level is within reach.</h2>
+            <span className={styles.sectionLabel}>
+              <Sparkles /> KEEP YOUR MOMENTUM
+            </span>
+
+            <h2>More ways to earn</h2>
+
             <p>
-              You need {xpRemaining.toLocaleString()} more XP to reach Level{" "}
-              {currentLevel + 1}.
+              Complete activities and keep moving towards your next level.
             </p>
           </div>
-          <div className={styles.activityIcon}><Zap size={28} /></div>
+
+          <div className={styles.earnIcon}>
+            <Award />
+          </div>
         </section>
 
         <footer className={styles.footer}>
-          <span>VELOOP REWARDS</span>
-          <span>Frontend prototype · Demo data only</span>
+          © 2026 VELOOP REWARDS
+          <span>LEVEL UP YOUR JOURNEY</span>
         </footer>
       </div>
     </main>
   );
 }
+
