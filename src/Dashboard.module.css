@@ -1,860 +1,323 @@
 
-/* VELOOP REWARDS DASHBOARD */
+/* ===== LEVEL PROGRESSION BADGES ===== */
 
-.dashboard {
-  min-height: 100vh;
-  background: #161827;
-  color: #f5f6ff;
-  font-family: Inter, Arial, sans-serif;
-}
-
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px 28px 45px;
-}
-
-/* HEADER */
-
-.header {
-  min-height: 75px;
+.badgeRoadmap {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 25px;
+  align-items: flex-start;
+  position: relative;
+  gap: 4px;
+  padding: 15px 0 5px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.badgeRoadmap::before {
+  content: "";
+  position: absolute;
+  top: 52px;
+  left: 9%;
+  right: 9%;
+  border-top: 3px dotted #77708f;
+  z-index: 0;
 }
 
-.brandIcon {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ffdf79, #a96712);
-  color: #24182a;
-  font-size: 25px;
-  font-weight: 900;
-}
-
-.brandText {
+.badgeItem {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
-.brandText strong {
-  font-size: 20px;
-  letter-spacing: 1px;
+.badgeWrapper {
+  width: 76px;
+  height: 82px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.brandText small {
-  color: #e8c86d;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.headerRight {
+.levelBadge {
+  width: 68px;
+  height: 76px;
+  padding: 5px;
+  box-sizing: border-box;
+  clip-path: polygon(
+    50% 0%,
+    94% 24%,
+    94% 70%,
+    50% 100%,
+    6% 70%,
+    6% 24%
+  );
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+  filter: drop-shadow(0 0 8px currentColor);
 }
 
-.demoTag {
-  padding: 9px 15px;
-  border: 1px solid #41445b;
-  border-radius: 30px;
-  color: #83dfb8;
-  font-size: 12px;
+.badgeInner {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(
+    50% 0%,
+    94% 24%,
+    94% 70%,
+    50% 100%,
+    6% 70%,
+    6% 24%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(255,255,255,0.6);
+  box-sizing: border-box;
+}
+
+.badgeSymbol {
+  font-size: 35px;
+  color: #fff2d0;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+}
+
+/* BRONZE - LEVEL 1 */
+
+.bronze {
+  background: linear-gradient(
+    135deg,
+    #ffe0b0,
+    #d86d32,
+    #71300f
+  );
+  box-shadow: 0 0 12px rgba(255,140,65,0.5);
+}
+
+.bronze .badgeInner {
+  background: linear-gradient(
+    145deg,
+    #f5a36b,
+    #a5411d,
+    #66230e
+  );
+}
+
+/* SILVER - LEVEL 2 */
+
+.silver {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #aaaacb,
+    #565575
+  );
+  box-shadow: 0 0 12px rgba(173,172,225,0.5);
+}
+
+.silver .badgeInner {
+  background: linear-gradient(
+    145deg,
+    #aaaacb,
+    #626182,
+    #373650
+  );
+}
+
+/* GOLD - LEVEL 3 */
+
+.gold {
+  background: linear-gradient(
+    135deg,
+    #fff4a5,
+    #ffbf26,
+    #a76a00
+  );
+  box-shadow: 0 0 15px rgba(255,190,40,0.6);
+}
+
+.gold .badgeInner {
+  background: linear-gradient(
+    145deg,
+    #ffdc65,
+    #d28b0b,
+    #895000
+  );
+}
+
+/* CHAMPION - LEVEL 4 */
+
+.champion {
+  background: linear-gradient(
+    135deg,
+    #fff6a5,
+    #ffba24,
+    #a64bff,
+    #fbd64a
+  );
+  box-shadow:
+    0 0 10px #ffd64c,
+    0 0 22px #a33bff,
+    0 0 35px rgba(154,65,255,0.7);
+}
+
+.champion .badgeInner {
+  background: linear-gradient(
+    145deg,
+    #56299a,
+    #21113f,
+    #100c29
+  );
+  border: 2px solid #ffdc50;
+}
+
+.champion .badgeSymbol {
+  color: #ffd84d;
+  font-size: 37px;
+}
+
+.activeBadge {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 12px #a849ff);
+}
+
+.badgeCrown {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 26px;
+  color: #ffda4e;
+  z-index: 3;
+  text-shadow: 0 0 10px #ffb900;
+}
+
+/* LOCKED LEVELS */
+
+.locked {
+  background: linear-gradient(
+    135deg,
+    #a9a8c7,
+    #666581,
+    #34334d
+  );
+  opacity: 0.75;
+}
+
+.locked .badgeInner {
+  background: linear-gradient(
+    145deg,
+    #777690,
+    #45445f,
+    #29283e
+  );
+}
+
+.locked .badgeSymbol {
+  color: #c2c0dc;
+}
+
+/* CHECKMARKS */
+
+.badgeCheck {
+  width: 24px;
+  height: 24px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #ffdc4c;
+  border: 2px solid #17132c;
+  color: #17132c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 900;
+  box-sizing: border-box;
+}
+
+.currentCheck {
+  box-shadow: 0 0 12px #c44cff;
+  background: #ffdc69;
+}
+
+.lockedCheck {
+  background: #383650;
+  border: 2px solid #77748f;
+  color: #e2e0f5;
+  font-size: 14px;
+}
+
+/* LABELS */
+
+.badgeText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  margin-top: 9px;
+  color: #e7e3ff;
+}
+
+.badgeText strong {
+  font-size: 14px;
   font-weight: 700;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #38304f;
-  border: 1px solid #66558a;
-  font-weight: 800;
-}
-
-/* CURRENT LEVEL CARD */
-
-.levelCard {
-  padding: 30px 35px;
-  border: 1px solid #343750;
-  border-radius: 27px;
-  background: #202235;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  margin-bottom: 28px;
-}
-
-.topLine {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.sectionLabel {
-  color: #e9cb79;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-
-.progressStatus {
-  color: #83dfb8;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.championRow {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  margin: 30px 0 24px;
-}
-
-.championArtwork {
-  width: 180px;
-  min-width: 180px;
-  height: 180px;
-  display: grid;
-  place-items: center;
-}
-
-.championBadge {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  filter: drop-shadow(0 0 12px rgba(255, 183, 47, 0.2));
-}
-
-.championInfo {
-  min-width: 0;
-}
-
-.levelNumber {
-  color: #e9cb79;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-
-.championInfo h1 {
-  margin: 8px 0 12px;
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
-}
-
-.championInfo p {
-  color: #aeb0c3;
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* XP PROGRESS */
-
-.xpSection {
-  padding: 25px 0 30px;
-  border-bottom: 1px solid #383a50;
-}
-
-.xpHeading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.xpHeading span {
-  color: #c5c7d8;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.xpHeading strong {
-  font-size: 19px;
-}
-
-.xpHeading strong span {
-  color: #aeb0c3;
-  font-size: inherit;
-}
-
-.progressTrack {
-  width: 100%;
-  height: 12px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #383b51;
-}
-
-.progressFill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #dba83b, #ffe38b);
-  transition: width 0.3s ease;
-}
-
-.progressMeta {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 13px;
-  color: #aeb0c3;
-  font-size: 14px;
-}
-
-.progressMeta strong {
-  color: #f0d47d;
-}
-
-/* STATISTICS */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding-top: 25px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  padding: 8px 15px;
-  border-right: 1px solid #383a50;
-}
-
-.stat:last-child {
-  border-right: none;
-}
-
-.stat span {
-  color: #e8c86d;
-  font-size: 25px;
-}
-
-.stat small {
-  color: #aeb0c3;
+.badgeText span {
   font-size: 13px;
 }
 
-.stat strong {
-  font-size: 23px;
+.activeBadgeText {
+  color: #ffdf4d;
+  text-shadow: 0 0 10px rgba(255,205,50,0.4);
 }
 
-/* NEXT REWARD */
+/* MOBILE RESPONSIVENESS */
 
-.rewardCard {
-  padding: 28px 35px;
-  margin-bottom: 28px;
-  border: 1px solid #343750;
-  border-radius: 27px;
-  background: linear-gradient(135deg, #24263b, #202235);
-  text-align: center;
-  overflow: hidden;
-}
-
-.rewardHeading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: left;
-}
-
-.rewardSmallIcon {
-  color: #e9cb79;
-  font-size: 27px;
-}
-
-.rewardArtwork {
-  width: min(100%, 300px);
-  margin: 15px auto 0;
-  display: flex;
-  justify-content: center;
-}
-
-.rewardGift {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 0 15px rgba(255, 190, 55, 0.2));
-}
-
-.rewardTitle {
-  margin-top: -4px;
-  color: #c8c9d8;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-
-.rewardCard h2 {
-  margin: 15px 0;
-  color: #f1d17b;
-  font-size: clamp(35px, 6vw, 54px);
-  font-weight: 800;
-}
-
-.rewardDescription {
-  color: #aeb0c3;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.rewardBottom {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 30px 0 13px;
-  padding-top: 22px;
-  border-top: 1px solid #383a50;
-  color: #aeb0c3;
-  font-size: 14px;
-}
-
-.rewardBottom strong {
-  color: #f0d47d;
-}
-
-.unlockLabel {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 9px 16px;
-  border: 1px solid #76603a;
-  border-radius: 25px;
-  color: #e9cb79;
-  font-size: 13px;
-}
-
-/* LEVEL PROGRESSION */
-
-.roadmap {
-  padding: 27px 30px;
-  margin-bottom: 28px;
-  border: 1px solid #343750;
-  border-radius: 25px;
-  background: #202235;
-}
-
-.cardHeading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.cardHeading h2 {
-  margin: 0;
-  font-size: 17px;
-}
-
-.cardHeading span {
-  color: #e9cb79;
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-
-.roadmapList {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.roadmapItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 9px;
-  padding: 15px 5px;
-  border-radius: 14px;
-  text-align: center;
-  color: #aeb0c3;
-}
-
-.roadmapBadge {
-  width: 49px;
-  height: 49px;
-  display: grid;
-  place-items: center;
-  border: 2px solid #565970;
-  border-radius: 13px;
-  background: #292b40;
-  color: #e9cb79;
-  font-size: 23px;
-}
-
-.roadmapItem strong {
-  color: #e6e6f0;
-  font-size: 12px;
-}
-
-.roadmapItem small {
-  font-size: 12px;
-}
-
-.currentRoadmap {
-  background: #302640;
-  border: 1px solid #9670dc;
-}
-
-.currentRoadmap .roadmapBadge {
-  border-color: #e7b94f;
-  background: #47334c;
-  box-shadow: 0 0 14px rgba(255, 196, 65, 0.25);
-}
-
-.currentRoadmap strong {
-  color: #f2d36f;
-}
-
-.completedRoadmap .roadmapBadge {
-  border-color: #b98d42;
-  color: #f3d47d;
-}
-
-/* GAME */
-
-.gameCard {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  padding: 28px;
-  margin-bottom: 28px;
-  overflow: hidden;
-  border: 1px solid #57416e;
-  border-radius: 24px;
-  background: linear-gradient(110deg, #29223e, #202235);
-}
-
-.gameIcon {
-  width: 75px;
-  min-width: 75px;
-  height: 75px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #392b65;
-  font-size: 36px;
-}
-
-.gameContent {
-  flex: 1;
-  min-width: 0;
-}
-
-.gameKicker {
-  color: #e9cb79;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.gameContent h2 {
-  margin: 7px 0;
-  font-size: 23px;
-}
-
-.gameContent p {
-  margin: 0 0 15px;
-  color: #b2b3c7;
-  font-size: 14px;
-}
-
-.gameButton {
-  padding: 11px 22px;
-  border: none;
-  border-radius: 25px;
-  background: linear-gradient(135deg, #ffe58c, #e6a928);
-  color: #291c24;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.gameButton:hover {
-  filter: brightness(1.08);
-}
-
-.gameControls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
-}
-
-.floatingCoin {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #fff0a0, #c98920);
-  color: #382239;
-  font-size: 22px;
-  font-weight: 900;
-}
-
-/* EARNING OPPORTUNITIES */
-
-.earningCard,
-.activitySection {
-  padding: 28px;
-  margin-bottom: 28px;
-  border: 1px solid #343750;
-  border-radius: 23px;
-  background: #202235;
-}
-
-.earningCard h2,
-.activitySection h2 {
-  margin: 12px 0;
-  font-size: 22px;
-}
-
-.earningCard > p {
-  color: #aeb0c3;
-  font-size: 14px;
-}
-
-.earningGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 22px;
-}
-
-.earningItem {
-  padding: 19px;
-  border: 1px solid #393c53;
-  border-radius: 15px;
-  background: #191c2d;
-}
-
-.earningItem > span {
-  font-size: 25px;
-}
-
-.earningItem h3 {
-  margin: 12px 0 7px;
-  font-size: 15px;
-}
-
-.earningItem p {
-  margin: 0;
-  color: #aeb0c3;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* RECENT ACTIVITY */
-
-.activityItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  padding: 17px 0;
-  border-bottom: 1px solid #393c53;
-}
-
-.activityItem:last-child {
-  border-bottom: none;
-}
-
-.activityItem strong {
-  font-size: 14px;
-}
-
-.activityItem p {
-  margin: 6px 0 0;
-  color: #aeb0c3;
-  font-size: 13px;
-}
-
-.activityItem > strong:last-child {
-  color: #f0d47d;
-  white-space: nowrap;
-}
-
-/* FOOTER */
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 20px 5px;
-  color: #8589a1;
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-
-/* TABLET */
-
-@media (max-width: 760px) {
-  .container {
-    padding: 14px 18px 35px;
+@media (max-width: 500px) {
+  .badgeRoadmap {
+    gap: 1px;
   }
 
-  .levelCard,
-  .rewardCard {
-    padding: 25px;
+  .badgeWrapper {
+    width: 55px;
+    height: 65px;
   }
 
-  .championArtwork {
-    width: 145px;
-    min-width: 145px;
-    height: 155px;
+  .levelBadge {
+    width: 52px;
+    height: 60px;
   }
 
-  .roadmapList {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .earningGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* MOBILE */
-
-@media (max-width: 480px) {
-  .container {
-    padding: 12px 14px 30px;
-  }
-
-  .header {
-    min-height: 60px;
-    margin-bottom: 17px;
-  }
-
-  .brandIcon {
-    width: 37px;
-    height: 37px;
-    font-size: 21px;
-  }
-
-  .brandText strong {
-    font-size: 17px;
-  }
-
-  .brandText small {
-    font-size: 10px;
-  }
-
-  .headerRight {
-    gap: 8px;
-  }
-
-  .demoTag {
-    padding: 7px 9px;
-    font-size: 9px;
-  }
-
-  .avatar {
-    width: 34px;
-    height: 34px;
-  }
-
-  .levelCard {
-    padding: 22px 19px;
-    border-radius: 24px;
-  }
-
-  .topLine {
-    align-items: center;
-  }
-
-  .sectionLabel {
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-
-  .progressStatus {
-    font-size: 10px;
-  }
-
-  .championRow {
-    gap: 10px;
-    margin: 25px 0 18px;
-  }
-
-  .championArtwork {
-    width: 112px;
-    min-width: 112px;
-    height: 130px;
-  }
-
-  .levelNumber {
-    font-size: 13px;
-    letter-spacing: 2px;
-  }
-
-  .championInfo h1 {
+  .badgeSymbol {
     font-size: 27px;
   }
 
-  .championInfo p {
-    font-size: 12px;
+  .champion .badgeSymbol {
+    font-size: 29px;
   }
 
-  .xpSection {
-    padding: 20px 0 24px;
+  .badgeCrown {
+    font-size: 20px;
+    top: -10px;
   }
 
-  .xpHeading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .xpHeading strong {
-    font-size: 19px;
-  }
-
-  .progressMeta {
-    font-size: 12px;
-  }
-
-  .stats {
-    padding-top: 20px;
-  }
-
-  .stat {
-    padding: 7px 8px;
-    gap: 8px;
-  }
-
-  .stat span {
-    font-size: 22px;
-  }
-
-  .stat small {
+  .badgeText strong {
     font-size: 11px;
   }
 
-  .stat strong {
-    font-size: 18px;
+  .badgeText span {
+    font-size: 10px;
   }
 
-  .rewardCard {
-    padding: 23px 19px;
-    border-radius: 24px;
-  }
-
-  .rewardArtwork {
-    width: min(100%, 260px);
-    margin-top: 20px;
-  }
-
-  .rewardTitle {
-    font-size: 11px;
-  }
-
-  .rewardCard h2 {
-    font-size: 39px;
-  }
-
-  .rewardDescription {
+  .badgeCheck {
+    width: 21px;
+    height: 21px;
     font-size: 13px;
   }
 
-  .roadmap {
-    padding: 22px 12px;
-  }
-
-  .cardHeading h2 {
-    font-size: 14px;
-  }
-
-  .cardHeading span {
-    font-size: 9px;
-  }
-
-  .roadmapList {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 3px;
-  }
-
-  .roadmapItem {
-    padding: 12px 2px;
-  }
-
-  .roadmapBadge {
-    width: 39px;
-    height: 39px;
-    font-size: 19px;
-  }
-
-  .roadmapItem strong,
-  .roadmapItem small {
-    font-size: 10px;
-  }
-
-  .gameCard {
-    gap: 12px;
-    padding: 18px 13px;
-    border-radius: 20px;
-  }
-
-  .gameIcon {
-    width: 52px;
-    min-width: 52px;
-    height: 52px;
-    font-size: 26px;
-  }
-
-  .gameContent h2 {
-    font-size: 19px;
-  }
-
-  .gameContent p {
-    font-size: 12px;
-  }
-
-  .gameKicker {
-    font-size: 10px;
-  }
-
-  .gameButton {
-    padding: 10px 16px;
-    font-size: 12px;
-  }
-
-  .floatingCoin {
-    display: none;
-  }
-
-  .earningCard,
-  .activitySection {
-    padding: 22px 18px;
-  }
-
-  .earningCard h2,
-  .activitySection h2 {
-    font-size: 19px;
-  }
-
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 10px;
+  .badgeRoadmap::before {
+    top: 43px;
   }
 }
