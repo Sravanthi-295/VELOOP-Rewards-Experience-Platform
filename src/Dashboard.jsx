@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import "./Dashboard.css";
+import styles from "./Dashboard.module.css";
 
 const levels = [
   { level: 1, name: "Starter", symbol: "★" },
@@ -14,6 +14,7 @@ const levels = [
 const currentXP = 4200;
 const currentLevel = 4;
 const nextLevelXP = 5000;
+
 const progress = Math.min(
   100,
   Math.round((currentXP / nextLevelXP) * 100)
@@ -23,6 +24,7 @@ export default function Dashboard() {
   const [gameState, setGameState] = useState("ready");
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
+
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ export default function Dashboard() {
       setTimeLeft((time) => {
         if (time <= 1) {
           window.clearInterval(timerRef.current);
+          timerRef.current = null;
           setGameState("finished");
           return 0;
         }
@@ -55,165 +58,147 @@ export default function Dashboard() {
     }, 1000);
   }
 
+  function catchCoin() {
+    if (gameState === "playing") {
+      setScore((value) => value + 1);
+    }
+  }
+
   return (
-    <main className="vl-page">
-      <div className="vl-glow" />
+    <main className={styles.dashboard}>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.brand}>
+          <span className={styles.brandIcon}>V</span>
+          <span>VELOOP REWARDS</span>
+        </div>
 
-      <div className="vl-container">
+        <div className={styles.headerRight}>
+          <span className={styles.demoTag}>IN PROGRESS</span>
+          <span className={styles.avatar}>S</span>
+        </div>
+      </header>
 
-        {/* Header */}
-        <header className="vl-header">
-          <a className="vl-brand" href="/">
-            <span className="vl-brand-mark">V</span>
-            <span>
-              <strong>VELOOP</strong>
-              <small>REWARDS</small>
-            </span>
-          </a>
+      <div className={styles.container}>
+        {/* Welcome */}
+        <section className={styles.welcome}>
+          <h1>Welcome to VELOOP Rewards!</h1>
+          <p>
+            Track your progress, earn rewards and level up
+            your journey.
+          </p>
+        </section>
 
-          <div className="vl-header-right">
-            <span className="vl-status">
-              <i /> IN PROGRESS
-            </span>
-            <span className="vl-avatar">S</span>
-          </div>
-        </header>
+        {/* Level and Reward Cards */}
+        <section className={styles.heroGrid}>
+          <div className={styles.levelCard}>
+            <h2>Your Current Level</h2>
 
-        {/* Current Level */}
-        <section className="vl-hero">
-          <div className="vl-hero-medal">
-            <div className="vl-medal">
-              <span>04</span>
-              <b>♛</b>
+            <div className={styles.levelNumber}>
+              {String(currentLevel).padStart(2, "0")}
             </div>
-            <span className="vl-medal-ribbon">
-              CHAMPION
-            </span>
+
+            <div className={styles.levelName}>Champion ♛</div>
+
+            <p className={styles.levelDescription}>
+              You are making great progress. Keep going
+              to unlock your next reward!
+            </p>
+
+            <div className={styles.levelStats}>
+              <span>⚡ Total XP: {currentXP.toLocaleString()}</span>
+              <span>🏆 Level {currentLevel}</span>
+            </div>
           </div>
 
-          <div className="vl-hero-copy">
-            <span className="vl-eyebrow">
-              ♛ YOUR CURRENT LEVEL
+          <div className={styles.rewardCard}>
+            <h2>Your Next Reward</h2>
+
+            <div className={styles.rewardAmount}>500 VEs</div>
+
+            <p className={styles.rewardDescription}>
+              Keep earning XP to reach your next milestone.
+            </p>
+
+            <span className={styles.statusPending}>
+              🔒 Unlock at Level 5
             </span>
 
-            <p className="vl-level-number">LEVEL 04</p>
-            <h1>Champion</h1>
+            <div className={styles.rewardProgress}>
+              <div
+                className={styles.rewardProgressBar}
+                style={{ width: `${progress}%` }}
+              />
+            </div>
 
-            <p className="vl-muted">
-              You are making great progress. Keep going
-              to unlock your next reward.
+            <p className={styles.rewardDescription}>
+              {progress}% progress towards your next level
             </p>
           </div>
         </section>
 
         {/* XP Progress */}
-        <section className="vl-panel vl-xp">
-          <div className="vl-section-line">
-            <span className="vl-section-label">
-              ⚡ XP PROGRESS
-            </span>
+        <section className={styles.levelCard}>
+          <h2>⚡ XP Progress</h2>
 
-            <strong>
-              {currentXP.toLocaleString()}
-              <span> / {nextLevelXP.toLocaleString()}</span>
-            </strong>
+          <div className={styles.levelStats}>
+            <strong>{currentXP.toLocaleString()} XP</strong>
+            <strong>{nextLevelXP.toLocaleString()} XP</strong>
           </div>
 
-          <div className="vl-progress-track">
+          <div className={styles.rewardProgress}>
             <div
-              className="vl-progress-fill"
+              className={styles.rewardProgressBar}
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          <div className="vl-progress-meta">
-            <span>
-              <b>{progress}%</b> completed
-            </span>
-
-            <strong>
-              {(nextLevelXP - currentXP).toLocaleString()} XP to go
-            </strong>
-          </div>
+          <p className={styles.levelDescription}>
+            {nextLevelXP - currentXP} XP remaining to reach Level 5.
+          </p>
         </section>
 
-        {/* Statistics */}
-        <section className="vl-stats">
-          <div className="vl-stat">
-            <span>⚡</span>
-            <small>Total XP</small>
-            <strong>{currentXP.toLocaleString()}</strong>
-          </div>
+        {/* Level Roadmap */}
+        <section className={styles.roadmap}>
+          <h2>✦ Level Progression</h2>
 
-          <div className="vl-stat">
-            <span>🏆</span>
-            <small>Current Level</small>
-            <strong>{currentLevel}</strong>
-          </div>
-
-          <div className="vl-stat">
-            <span>◎</span>
-            <small>Next Goal</small>
-            <strong>Level 5</strong>
-          </div>
-        </section>
-
-        {/* Next Reward */}
-        <section className="vl-panel vl-reward">
-          <div>
-            <span className="vl-section-label">
-              🎁 YOUR NEXT REWARD
-            </span>
-
-            <h2>500 VEs</h2>
-
-            <p className="vl-muted">
-              Keep earning XP to reach your next milestone.
-            </p>
-
-            <span className="vl-unlock">
-              🔒 Unlock at Level 5
-            </span>
-          </div>
-
-          <div
-            className="vl-gift"
-            aria-label="Reward gift illustration"
-          >
-            <div className="vl-gift-bow">∞</div>
-            <div className="vl-gift-lid" />
-
-            <div className="vl-gift-box">
-              <span>V</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Level Progression */}
-        <section className="vl-panel vl-progression">
-          <div className="vl-card-heading">
-            <h2>✦ LEVEL PROGRESSION</h2>
-            <span>YOUR JOURNEY</span>
-          </div>
-
-          <div className="vl-level-track">
+          <div className={styles.roadmapList}>
             {levels.map((item) => {
               const active = item.level === currentLevel;
+              const completed = item.level < currentLevel;
               const locked = item.level > currentLevel;
 
               return (
                 <div
-                  className={`vl-level-step ${
-                    active ? "active" : ""
-                  } ${locked ? "locked" : ""}`}
                   key={item.level}
+                  className={`${styles.roadmapItem} ${
+                    active ? styles.currentRoadmap : ""
+                  } ${completed ? styles.completedRoadmap : ""}`}
                 >
-                  <div className="vl-small-medal">
+                  <div className={styles.earningIcon}>
                     {locked ? "🔒" : item.symbol}
                   </div>
 
-                  <strong>Level {item.level}</strong>
-                  <small>{item.name}</small>
+                  <h3>Level {item.level}</h3>
+                  <p>{item.name}</p>
+
+                  {active && (
+                    <span className={styles.status}>
+                      Current Level
+                    </span>
+                  )}
+
+                  {completed && (
+                    <span className={styles.statusSuccess}>
+                      Completed
+                    </span>
+                  )}
+
+                  {locked && (
+                    <span className={styles.statusPending}>
+                      Locked
+                    </span>
+                  )}
                 </div>
               );
             })}
@@ -221,88 +206,126 @@ export default function Dashboard() {
         </section>
 
         {/* Mini Game */}
-        <section className="vl-game">
-          <div className="vl-game-icon">🎮</div>
+        <section className={styles.gameCard}>
+          <h2>🎮 Level-Up Arcade</h2>
 
-          <div className="vl-game-content">
-            <span className="vl-game-kicker">
-              PLAY · EARN · LEVEL UP
-            </span>
+          <p>
+            Catch coins, earn rewards and enjoy the game!
+          </p>
 
-            <h2>Level-Up Arcade</h2>
-
-            <p>
-              Catch coins, earn rewards and boost your XP!
-            </p>
+          <div className={styles.gamePlayArea}>
+            <div className={styles.gameIcon}>🪙</div>
 
             {gameState === "ready" && (
-              <button
-                className="vl-button"
-                onClick={startGame}
-              >
-                Play Now <span>›</span>
-              </button>
+              <>
+                <h3>Ready to play?</h3>
+                <p>You have 15 seconds to catch as many coins as possible.</p>
+
+                <button
+                  className={styles.gameButton}
+                  onClick={startGame}
+                >
+                  Start Game
+                </button>
+              </>
             )}
 
             {gameState === "playing" && (
-              <div className="vl-game-controls">
-                <strong>
-                  Time: {timeLeft}s · Coins: {score}
-                </strong>
+              <>
+                <div className={styles.gameScore}>
+                  {score} Coins
+                </div>
+
+                <p>Time remaining: {timeLeft} seconds</p>
 
                 <button
-                  className="vl-button"
-                  onClick={() => setScore((value) => value + 1)}
+                  className={styles.gameButton}
+                  onClick={catchCoin}
                 >
                   Catch Coin ⚡
                 </button>
-              </div>
+              </>
             )}
 
             {gameState === "finished" && (
-              <div className="vl-game-controls">
-                <strong>
-                  Time's up! You caught {score} coins.
-                </strong>
+              <>
+                <h3>Game Over!</h3>
+
+                <div className={styles.gameScore}>
+                  {score} Coins
+                </div>
+
+                <p>Great effort! Try again to beat your score.</p>
 
                 <button
-                  className="vl-button"
+                  className={styles.gameButton}
                   onClick={startGame}
                 >
                   Play Again ↻
                 </button>
-              </div>
+              </>
             )}
           </div>
-
-          <div className="vl-floating-coin">V</div>
         </section>
 
         {/* Earning Opportunities */}
-        <section className="vl-panel vl-earn">
-          <div>
-            <span className="vl-section-label">
-              ✧ KEEP YOUR MOMENTUM
-            </span>
+        <section className={styles.earningCard}>
+          <h2>✧ More Ways to Earn</h2>
 
-            <h2>More Ways to Earn</h2>
+          <p className={styles.rewardDescription}>
+            Complete activities and keep moving towards
+            your next level.
+          </p>
 
-            <p className="vl-muted">
-              Complete activities and keep moving towards
-              your next level.
-            </p>
+          <div className={styles.earningGrid}>
+            <div className={styles.earningItem}>
+              <div className={styles.earningIcon}>🎯</div>
+              <h3>Complete Challenges</h3>
+              <p>Finish challenges to earn more XP.</p>
+            </div>
+
+            <div className={styles.earningItem}>
+              <div className={styles.earningIcon}>🎮</div>
+              <h3>Play Games</h3>
+              <p>Enjoy games and improve your score.</p>
+            </div>
+
+            <div className={styles.earningItem}>
+              <div className={styles.earningIcon}>🏆</div>
+              <h3>Reach Milestones</h3>
+              <p>Unlock new levels and rewards.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Recent Activity */}
+        <section className={styles.activitySection}>
+          <h2>Recent Activity</h2>
+
+          <div className={styles.activityItem}>
+            <div className={styles.activityInfo}>
+              <h3>Current Level Achieved</h3>
+              <p>You reached Champion Level.</p>
+            </div>
+            <span className={styles.activityPoints}>Level 4</span>
           </div>
 
-          <div className="vl-earn-icon">✧</div>
+          <div className={styles.activityItem}>
+            <div className={styles.activityInfo}>
+              <h3>XP Progress</h3>
+              <p>Keep going to reach the next milestone.</p>
+            </div>
+            <span className={styles.activityPoints}>4,200 XP</span>
+          </div>
         </section>
 
         {/* Footer */}
-        <footer className="vl-footer">
-          <span>© 2026 VELOOP REWARDS</span>
-          <span>LEVEL UP YOUR JOURNEY</span>
+        <footer className={styles.footer}>
+          <p>© 2026 VELOOP REWARDS</p>
+          <p>LEVEL UP YOUR JOURNEY</p>
         </footer>
-
       </div>
     </main>
   );
 }
+
