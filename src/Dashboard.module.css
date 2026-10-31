@@ -1,1033 +1,493 @@
+
+/* ==============================
+   VELOOP DASHBOARD - MAIN STYLES
+================================ */
+
 .dashboard {
   min-height: 100vh;
+  width: 100%;
   background: #161827;
   color: #f5f6ff;
   font-family: Inter, Arial, sans-serif;
-  padding-bottom: 24px;
 }
 
-.dashboard * {
-  box-sizing: border-box;
-}
+/* Header */
 
 .header {
+  width: 100%;
   min-height: 76px;
   padding: 16px 5%;
-  border-bottom: 1px solid #2b2e43;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  background: #1d2033;
+  border-bottom: 1px solid #30334a;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 11px;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 17px;
+  gap: 12px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: 1px;
-}
-
-.brand small {
-  display: block;
-  margin-top: 3px;
-  color: #a4a8bf;
-  font-size: 9px;
-  letter-spacing: 2px;
+  color: #ffffff;
 }
 
 .brandIcon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
-  background: linear-gradient(135deg, #f9d879, #c18c31);
-  color: #171827;
+  background: linear-gradient(135deg, #9b72ff, #6745d9);
+  color: #ffffff;
   font-size: 23px;
 }
 
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.demoTag,
-.gameTag,
-.availableTag,
-.comingSoon {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
+  gap: 16px;
 }
 
 .demoTag {
-  padding: 8px 11px;
-  border-radius: 8px;
-  background: #25283c;
-  color: #e9c875;
+  padding: 7px 13px;
+  border-radius: 20px;
+  background: #292d45;
+  color: #d6c9ff;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .avatar {
   width: 38px;
   height: 38px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  background: #34374f;
+  background: #7656dc;
   color: #ffffff;
   font-weight: 700;
 }
 
+/* Main Container */
+
 .container {
-  width: min(1200px, 92%);
+  width: 100%;
+  max-width: 1250px;
   margin: 0 auto;
+  padding: 35px 24px 60px;
 }
 
 .welcome {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 46px 0 32px;
-}
-
-.eyebrow {
-  display: inline-block;
-  color: #e3bf6b;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.8px;
+  margin-bottom: 28px;
 }
 
 .welcome h1 {
-  margin: 12px 0;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.15;
-  letter-spacing: -1.4px;
+  margin: 0 0 8px;
+  font-size: 30px;
+  font-weight: 800;
 }
 
-.welcome h1 span {
-  color: #e6c36e;
-}
-
-.welcome p,
-.sectionHeading p {
+.welcome p {
   margin: 0;
-  color: #a6abc2;
-  font-size: 14px;
-  line-height: 1.8;
+  color: #a5a8bd;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-.streak {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 15px 18px;
-  border: 1px solid #3d3440;
-  border-radius: 14px;
-  background: #211f30;
-  color: #edbd6d;
-}
-
-.streak strong,
-.streak span {
-  display: block;
-}
-
-.streak strong {
-  color: #f5f4fb;
-  font-size: 13px;
-}
-
-.streak span {
-  margin-top: 5px;
-  color: #a6abc2;
-  font-size: 11px;
-}
+/* Main Dashboard Grid */
 
 .heroGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 25px;
 }
+
+/* Common Card Style */
 
 .levelCard,
 .rewardCard,
 .gameCard,
 .earningCard,
-.activitySection {
-  border: 1px solid #30334a;
-  border-radius: 20px;
-  background: #1d2032;
-}
-
-.levelCard,
-.rewardCard {
+.activitySection,
+.roadmap {
   padding: 25px;
+  border: 1px solid #343750;
+  border-radius: 18px;
+  background: #202338;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-.cardTop,
-.rewardTop,
-.xpHeading,
-.progressBottom,
-.rewardProgress > div:first-child {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+.levelCard h2,
+.rewardCard h2,
+.gameCard h2,
+.earningCard h2,
+.activitySection h2,
+.roadmap h2 {
+  margin: 0 0 15px;
+  font-size: 19px;
+  font-weight: 700;
 }
 
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: #83d7b2;
-  font-size: 10px;
-  font-weight: 800;
-}
+/* Level Card */
 
-.status > span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #83d7b2;
-}
-
-.levelMain {
-  display: flex;
-  align-items: center;
-  gap: 23px;
-  margin: 25px 0 28px;
-}
-
-.heroBadge {
-  width: 104px;
-  height: 104px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.badgeFallback {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  border: 1px solid #5a4c36;
-  border-radius: 50%;
-  background: #302b29;
-  color: #e5c475;
-}
-
-.heroBadge.badgeFallback {
-  width: 104px;
-  height: 104px;
+.levelCard {
+  background: linear-gradient(135deg, #292344, #202338);
 }
 
 .levelNumber {
-  color: #e4c06d;
-  font-size: 11px;
+  margin: 12px 0;
+  color: #b69aff;
+  font-size: 42px;
   font-weight: 800;
-  letter-spacing: 1.8px;
 }
 
-.levelMain h2 {
-  margin: 7px 0;
-  font-size: 29px;
+.levelName {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.levelMain p,
-.rewardCard > p {
-  color: #a6abc2;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-.xpHeading {
-  margin-bottom: 13px;
-}
-
-.xpHeading > span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #b2b6cb;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.xpHeading > strong {
-  font-size: 13px;
-}
-
-.progressTrack {
-  width: 100%;
-  height: 9px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #35384e;
-}
-
-.progressFill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #d6a746, #f7df8e);
-  transition: width 0.8s ease;
-}
-
-.progressBottom {
-  margin-top: 11px;
-  color: #a6abc2;
-  font-size: 11px;
-}
-
-.progressBottom strong {
-  color: #e8cb7b;
+.levelDescription {
+  color: #b1b2c5;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .levelStats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 28px;
-  padding-top: 23px;
-  border-top: 1px solid #30334a;
-}
-
-.levelStats > div {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 9px;
-  min-width: 0;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 25px;
+  color: #c5c5d5;
+  font-size: 13px;
 }
 
 .levelStats svg {
-  color: #e4c06d;
+  width: 18px;
+  height: 18px;
+  color: #b69aff;
 }
 
-.levelStats span {
-  color: #a6abc2;
-  font-size: 11px;
-}
-
-.levelStats strong {
-  font-size: 18px;
-}
+/* Reward Card */
 
 .rewardCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: radial-gradient(ellipse at 50% 20%, #343047 0%, #1d2032 65%);
+  background: linear-gradient(135deg, #29283d, #202338);
 }
 
-.rewardTop {
-  width: 100%;
-  color: #e5c575;
-}
-
-.rewardVisual {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 130px;
-  height: 130px;
-  margin: 22px auto 15px;
-}
-
-.rewardGlow {
-  display: grid;
-  place-items: center;
-  width: 110px;
-  height: 110px;
-  border: 1px solid #79643e;
-  border-radius: 30px;
-  background: linear-gradient(145deg, #4b3c2c, #29263a);
-  box-shadow: 0 0 36px #d4a94b17;
-  color: #e8c36d;
-}
-
-.lockIcon {
-  position: absolute;
-  right: 0;
-  bottom: 7px;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #44465b;
-  border-radius: 50%;
-  background: #282b40;
-  color: #c9cde0;
-}
-
-.rewardLabel {
-  color: #c6cadb;
-  font-size: 10px;
+.rewardAmount {
+  margin: 15px 0;
+  color: #f4d47c;
+  font-size: 36px;
   font-weight: 800;
-  letter-spacing: 1.5px;
 }
 
-.rewardCard h2 {
-  margin: 10px 0 0;
-  color: #f1d27e;
-  font-size: 32px;
-}
-
-.rewardCard > p {
-  max-width: 280px;
-  margin: 10px auto;
+.rewardDescription {
+  color: #b1b2c5;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .rewardProgress {
   width: 100%;
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 1px solid #37364a;
-  text-align: left;
+  height: 10px;
+  margin: 20px 0 10px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #383b52;
 }
 
-.rewardProgress > div:first-child {
-  margin-bottom: 11px;
-  color: #a6abc2;
-  font-size: 11px;
-}
-
-.rewardProgress strong {
-  color: #f0d17b;
-}
-
-.disclaimer {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  text-align: left;
-  font-size: 10px !important;
-}
-
-.disclaimer svg {
-  flex-shrink: 0;
-}
-
-.section {
-  margin-top: 44px;
-}
-
-.sectionHeading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 22px;
-}
-
-.sectionHeading h2 {
-  margin: 8px 0;
-  font-size: 25px;
-  letter-spacing: -0.6px;
-}
-
-.sectionHeading p {
-  font-size: 13px;
-}
-
-.roadmap {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 13px;
-}
-
-.roadmapItem {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 0;
-  padding: 19px 8px;
-  border: 1px solid #30334a;
-  border-radius: 16px;
-  background: #1d2032;
-  text-align: center;
-}
-
-.currentRoadmap {
-  border-color: #c5a455;
-  background: linear-gradient(180deg, #302b32, #1d2032);
-  box-shadow: 0 0 0 1px #c5a45520;
-}
-
-.completedRoadmap {
-  border-color: #35564e;
-}
-
-.roadmapBadge {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 76px;
-  height: 76px;
-  margin-bottom: 12px;
-}
-
-.roadmapImage {
-  width: 100%;
+.rewardProgressBar {
   height: 100%;
-  object-fit: contain;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #9d79ff, #e0bd70);
+  transition: width 0.3s ease;
 }
 
-.roadmapImage.badgeFallback {
-  border-radius: 50%;
+.rewardProgress svg {
+  width: 18px;
+  height: 18px;
 }
 
-.completedIcon,
-.lockedIcon {
-  position: absolute;
-  right: -2px;
-  bottom: 0;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border: 2px solid #1d2032;
-  border-radius: 50%;
-  background: #2f6955;
-  color: #baf5d9;
-}
-
-.lockedIcon {
-  background: #383b50;
-  color: #b6bbcf;
-}
-
-.levelCaption {
-  color: #e5c575;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.roadmapItem > strong {
-  margin-top: 7px;
-  font-size: 13px;
-}
-
-.levelXP {
-  margin-top: 8px;
-  color: #a6abc2;
-  font-size: 10px;
-}
-
-.currentPill,
-.completedPill,
-.lockedPill {
-  margin-top: 13px;
-  padding: 6px 7px;
-  border-radius: 6px;
-  background: #55482d;
-  color: #f4d88c;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-}
-
-.completedPill {
-  background: #25453c;
-  color: #9be0c2;
-}
-
-.lockedPill {
-  background: #303348;
-  color: #b8bdd1;
-}
-
-.gameTag,
-.availableTag {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: #8ce0bc;
-}
+/* Game Section */
 
 .gameCard {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  overflow: hidden;
-}
-
-.gameInfo {
-  padding: 30px;
-}
-
-.gameIcon,
-.earningIcon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 20px;
-  border: 1px solid #4b4254;
-  border-radius: 14px;
-  background: #2e293e;
-  color: #e9c574;
-}
-
-.gameInfo h3,
-.earningCard h3 {
-  margin: 10px 0;
-  font-size: 22px;
-}
-
-.gameInfo > p,
-.earningCard > p {
-  color: #a6abc2;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.gameRules {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 23px;
-}
-
-.gameRules > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #c5c9da;
-  font-size: 12px;
-}
-
-.gameRules svg {
-  color: #e6c36e;
-}
-
-.gamePlayArea {
-  display: grid;
-  place-items: center;
-  min-height: 350px;
-  padding: 25px;
-  border-left: 1px solid #30334a;
-  background:
-    radial-gradient(ellipse at center, #343047 0%, #222438 55%, #1b1e30 100%);
-  text-align: center;
-}
-
-.gameStart,
-.gameActive,
-.gameResult {
-  width: 100%;
-}
-
-.coin,
-.coinButton {
-  display: grid;
-  place-items: center;
-  width: 78px;
-  height: 78px;
-  margin: 0 auto 22px;
-  border: 3px solid #f6dc8b;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #f4d983, #ba832d);
-  box-shadow: 0 0 35px #e5bb5330, inset 0 0 0 5px #d3a647;
-  color: #332719;
-  font-size: 35px;
-  font-weight: 900;
-}
-
-.gameStart h3,
-.gameResult h3 {
-  margin: 0 0 8px;
-  font-size: 21px;
-}
-
-.gameStart p,
-.gameActive > p,
-.gameResult p {
-  margin: 0 0 21px;
-  color: #a6abc2;
-  font-size: 12px;
-}
-
-.primaryButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 0 19px;
-  border: 0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #f3d781, #d6aa4b);
-  color: #201d27;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.primaryButton:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.06);
-}
-
-.gameCounters {
-  display: flex;
-  justify-content: center;
-  gap: 38px;
   margin-bottom: 25px;
 }
 
-.gameCounters > div {
+.gameCard p {
+  color: #b1b2c5;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gamePlayArea {
+  min-height: 220px;
+  margin-top: 20px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border: 1px dashed #55506e;
+  border-radius: 15px;
+  background: #191c2d;
+  text-align: center;
 }
 
-.gameCounters span {
-  color: #a6abc2;
-  font-size: 9px;
+.gameIcon {
+  font-size: 48px;
+}
+
+.gameScore {
+  color: #f4d47c;
+  font-size: 28px;
   font-weight: 800;
-  letter-spacing: 1px;
 }
 
-.gameCounters strong {
-  color: #f0d17b;
-  font-size: 23px;
-}
-
-.coinButton {
+.gameButton {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #9b72ff, #6745d9);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.12s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.coinButton:hover {
-  transform: scale(1.08);
+.gameButton:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
-.coinButton:active {
-  transform: scale(0.92);
+.gameButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.gameResult > svg {
-  margin-bottom: 17px;
-  color: #f0d17b;
-}
+/* Earning Section */
 
-.gameResult h3 {
-  margin-top: 9px;
-  color: #f0d17b;
-  font-size: 30px;
+.earningCard {
+  margin-bottom: 25px;
 }
 
 .earningGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
 }
 
-.earningCard {
-  padding: 23px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+.earningItem {
+  padding: 20px;
+  border: 1px solid #373a52;
+  border-radius: 14px;
+  background: #191c2d;
 }
 
-.earningCard:hover {
-  transform: translateY(-3px);
-  border-color: #746341;
+.earningItem h3 {
+  margin: 10px 0;
+  font-size: 16px;
 }
 
-.earningCard .earningIcon {
-  margin-bottom: 17px;
+.earningItem p {
+  margin: 0;
+  color: #a5a8bd;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.comingSoon,
-.availableTag {
-  font-size: 9px;
+.earningIcon {
+  color: #b69aff;
+  font-size: 26px;
 }
 
-.comingSoon {
-  color: #b8bdd1;
-}
-
-.earningCard h3 {
-  margin-top: 12px;
-  font-size: 17px;
-}
-
-.earningCard > p {
-  min-height: 44px;
-}
-
-.textButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 0;
-  border: 0;
-  background: transparent;
-  color: #e9c574;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.textButton:hover {
-  color: #fff0bd;
-}
-
-.notice {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 18px;
-  padding: 14px;
-  border: 1px solid #4b4254;
-  border-radius: 10px;
-  background: #25263b;
-  color: #e7e9f5;
-  font-size: 12px;
-}
-
-.notice button {
-  border: 0;
-  background: transparent;
-  color: #e9c574;
-  cursor: pointer;
-}
+/* Activity Section */
 
 .activitySection {
+  margin-bottom: 25px;
+}
+
+.activityItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  margin-top: 42px;
-  padding: 28px;
-  background: linear-gradient(110deg, #292638, #1d2032 75%);
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #36394f;
 }
 
-.activitySection h2 {
-  margin: 9px 0;
-  font-size: 22px;
+.activityItem:last-child {
+  border-bottom: none;
 }
 
-.activitySection p {
+.activityInfo h3 {
+  margin: 0 0 5px;
+  font-size: 14px;
+}
+
+.activityInfo p {
   margin: 0;
-  color: #a6abc2;
+  color: #a5a8bd;
   font-size: 12px;
-  line-height: 1.7;
 }
 
-.activityIcon {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
-  border-radius: 17px;
-  background: #373146;
-  color: #e9c574;
+.activityPoints {
+  color: #f4d47c;
+  font-size: 14px;
+  font-weight: 700;
 }
+
+/* Level Roadmap */
+
+.roadmap {
+  margin-bottom: 25px;
+}
+
+.roadmapList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.roadmapItem {
+  padding: 18px;
+  border: 1px solid #373a52;
+  border-radius: 13px;
+  background: #191c2d;
+}
+
+.roadmapItem h3 {
+  margin: 10px 0 5px;
+  font-size: 15px;
+}
+
+.roadmapItem p {
+  margin: 0;
+  color: #a5a8bd;
+  font-size: 12px;
+}
+
+.currentRoadmap {
+  border-color: #9b72ff;
+  background: #292344;
+}
+
+.completedRoadmap {
+  border-color: #438d76;
+}
+
+/* Status Labels */
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #343750;
+  color: #d8d3f2;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.statusSuccess {
+  background: #1e493e;
+  color: #8de0bd;
+}
+
+.statusPending {
+  background: #51452a;
+  color: #f4d47c;
+}
+
+/* Footer */
 
 .footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 40px;
-  padding-top: 22px;
-  border-top: 1px solid #30334a;
-  color: #858ba6;
-  font-size: 10px;
+  padding: 20px;
+  color: #8589a1;
+  font-size: 12px;
+  text-align: center;
 }
 
-.footer span:first-child {
-  color: #e0c16f;
-  font-weight: 800;
-  letter-spacing: 1.3px;
-}
+/* Responsive Design */
 
 @media (max-width: 900px) {
   .heroGrid {
     grid-template-columns: 1fr;
   }
 
-  .rewardCard {
-    min-height: 380px;
+  .earningGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .roadmap {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .gameCard {
-    grid-template-columns: 1fr;
-  }
-
-  .gamePlayArea {
-    border-top: 1px solid #30334a;
-    border-left: 0;
+  .roadmapList {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
   .header {
-    padding: 14px 4%;
+    padding: 14px 18px;
   }
 
   .brand {
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .brandIcon {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
   }
 
-  .demoTag {
-    display: none;
-  }
-
-  .container {
-    width: 92%;
-  }
-
-  .welcome {
-    align-items: flex-start;
-    flex-direction: column;
-    padding-top: 32px;
-  }
-
-  .welcome h1 {
-    font-size: 30px;
-  }
-
-  .welcome p {
-    font-size: 12px;
-  }
-
-  .streak {
-    width: 100%;
-  }
-
-  .levelCard,
-  .rewardCard {
-    padding: 19px;
-    border-radius: 16px;
-  }
-
-  .levelMain {
-    gap: 16px;
-  }
-
-  .heroBadge {
-    width: 78px;
-    height: 78px;
-  }
-
-  .heroBadge.badgeFallback {
-    width: 78px;
-    height: 78px;
-  }
-
-  .levelMain h2 {
-    font-size: 23px;
-  }
-
-  .levelMain p {
-    font-size: 11px;
-  }
-
-  .xpHeading {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .levelStats {
+  .headerRight {
     gap: 8px;
   }
 
-  .levelStats span {
+  .demoTag {
+    padding: 6px 9px;
     font-size: 10px;
   }
 
-  .levelStats strong {
-    font-size: 15px;
+  .container {
+    padding: 25px 15px 40px;
   }
 
-  .section {
-    margin-top: 34px;
+  .welcome h1 {
+    font-size: 24px;
   }
 
-  .sectionHeading h2 {
-    font-size: 22px;
-  }
-
-  .sectionHeading p {
-    font-size: 12px;
-  }
-
+  .levelCard,
+  .rewardCard,
+  .gameCard,
+  .earningCard,
+  .activitySection,
   .roadmap {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    padding: 18px;
   }
 
-  .roadmapItem {
-    padding: 16px 7px;
-  }
-
-  .gameInfo {
-    padding: 22px;
-  }
-
-  .gamePlayArea {
-    min-height: 320px;
-    padding: 20px;
-  }
-
-  .earningGrid {
+  .earningGrid,
+  .roadmapList {
     grid-template-columns: 1fr;
   }
 
-  .earningCard > p {
-    min-height: 0;
-  }
-
-  .activitySection {
-    align-items: flex-start;
-    padding: 21px;
-  }
-
-  .activitySection h2 {
-    font-size: 19px;
-  }
-
-  .activityIcon {
-    width: 45px;
-    height: 45px;
-  }
-
-  .footer {
+  .levelStats {
     flex-direction: column;
-    line-height: 1.6;
+  }
+
+  .rewardAmount {
+    font-size: 30px;
+  }
+
+  .activityItem {
+    align-items: flex-start;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .progressFill,
-  .primaryButton,
-  .coinButton,
-  .earningCard {
-    transition: none;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-}
