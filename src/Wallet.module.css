@@ -1,0 +1,969 @@
+.main {
+  width: auto;
+  min-width: 0;
+  max-width: 1600px;
+  flex: 1;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 64px) 25px;
+}
+
+.topbar {
+  display: flex;
+  min-height: 65px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border: 0;
+  background: transparent;
+  color: #b6bdcc;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  color: #f0cc83;
+}
+
+.previewLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #a7adbd;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 1px;
+}
+
+.previewLabel > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9dc8ac;
+  box-shadow: 0 0 0 3px rgba(131, 185, 156, .1);
+}
+
+.pageIntro {
+  padding: 28px 0 18px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #c3a66f;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.3px;
+}
+
+.pageIntro h1 {
+  margin: 8px 0 6px;
+  color: #f3f4f8;
+  font-size: clamp(24px, 3vw, 31px);
+  font-weight: 620;
+  letter-spacing: -.7px;
+}
+
+.pageIntro > p:last-child {
+  margin: 0;
+  color: #aab0c0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.demoNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+  border: 1px solid rgba(223, 189, 120, .18);
+  border-radius: 10px;
+  background: linear-gradient(110deg, rgba(223, 189, 120, .075), rgba(31, 34, 52, .48));
+  color: #ccb987;
+}
+
+.demoNotice svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.demoNotice p {
+  margin: 0;
+  color: #b7bac5;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.demoNotice strong {
+  color: #ecd39b;
+}
+
+.balanceCard {
+  position: relative;
+  display: flex;
+  min-height: 127px;
+  align-items: center;
+  gap: 17px;
+  overflow: hidden;
+  padding: 20px 24px;
+  border: 1px solid rgba(164, 190, 233, .19);
+  border-radius: 13px;
+  background:
+    radial-gradient(ellipse at 91% 8%, rgba(119, 164, 223, .23), transparent 49%),
+    linear-gradient(108deg, #1d355d, #244c7e 65%, #315c8d);
+  box-shadow: 0 12px 30px rgba(11, 24, 44, .16);
+}
+
+.balanceIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  place-items: center;
+  border: 1px solid rgba(223, 235, 255, .19);
+  border-radius: 12px;
+  background: rgba(224, 237, 255, .1);
+  color: #e8effb;
+}
+
+.balanceCard > div {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.balanceCard > div > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d3deed;
+  font-size: 10px;
+}
+
+.balanceCard > div > strong {
+  color: #fff;
+  font-size: 27px;
+  font-weight: 650;
+  letter-spacing: -.6px;
+}
+
+.balanceCard > div > small {
+  color: #c0cde0;
+  font-size: 9px;
+}
+
+.sampleTag {
+  padding: 3px 5px;
+  border: 1px solid rgba(229, 238, 255, .23);
+  border-radius: 4px;
+  color: #e2e8f4;
+  font-size: 7px;
+  font-weight: 750;
+  letter-spacing: .6px;
+}
+
+.balanceShine {
+  position: absolute;
+  right: -40px;
+  bottom: -156px;
+  width: 270px;
+  height: 230px;
+  border: 1px solid rgba(231, 240, 255, .12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 25px rgba(231, 240, 255, .025), 0 0 0 55px rgba(231, 240, 255, .018);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.statCard,
+.formCard,
+.requestCard,
+.quickCard,
+.transactionsCard {
+  min-width: 0;
+  border: 1px solid #30354b;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #222537, #1d2031);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
+}
+
+.statCard {
+  padding: 15px;
+}
+
+.statHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  color: #aeb4c3;
+  font-size: 9px;
+}
+
+.statIcon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 10px;
+}
+
+.blue {
+  background: rgba(98, 144, 207, .16);
+  color: #9fc2f0;
+}
+
+.amber {
+  background: rgba(206, 173, 101, .15);
+  color: #e3c782;
+}
+
+.green {
+  background: rgba(113, 174, 143, .14);
+  color: #9cc9aa;
+}
+
+.purple {
+  background: rgba(164, 137, 198, .14);
+  color: #c2a9e3;
+}
+
+.statCard > strong {
+  display: block;
+  margin-top: 11px;
+  overflow: hidden;
+  color: #f0f1f5;
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-weight: 650;
+  letter-spacing: -.3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statCard > small {
+  display: block;
+  margin-top: 5px;
+  color: #9299ab;
+  font-size: 8px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(285px, .75fr);
+  align-items: start;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.formCard {
+  padding: 20px;
+}
+
+.cardHeading,
+.transactionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardHeading h2,
+.transactionHeader h2,
+.quickCard h2 {
+  margin: 0;
+  color: #eff0f4;
+  font-size: 15px;
+  font-weight: 630;
+}
+
+.cardHeading p,
+.transactionHeader p {
+  margin: 5px 0 0;
+  color: #9da4b5;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.formIcon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 1px solid rgba(135, 164, 211, .13);
+  border-radius: 10px;
+  background: rgba(98, 144, 207, .11);
+  color: #aac3e7;
+}
+
+.fieldLabel {
+  display: block;
+  margin: 17px 0 7px;
+  color: #d3d5de;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.inputShell,
+.selectShell {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  border: 1px solid #42475b;
+  border-radius: 8px;
+  background: #191c2b;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.inputShell:focus-within,
+.selectShell:focus-within,
+.textInput:focus {
+  border-color: #839fc9;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(106, 145, 203, .12);
+}
+
+.inputShell > span {
+  padding-left: 12px;
+  color: #aeb8ca;
+  font-size: 12px;
+}
+
+.inputShell input,
+.selectShell select,
+.textInput {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  border: 1px solid #42475b;
+  border-radius: 8px;
+  outline: none;
+  background: #191c2b;
+  color: #e9ebf1;
+  font: inherit;
+  font-size: 10px;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.inputShell input {
+  min-height: 40px;
+  padding: 0 12px 0 8px;
+  border: 0;
+  background: transparent;
+}
+
+.inputShell input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.inputShell input::-webkit-inner-spin-button,
+.inputShell input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.inputShell input[type=number] {
+  appearance: textfield;
+}
+
+.selectShell::after {
+  position: absolute;
+  top: 16px;
+  right: 13px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid #aeb6c5;
+  border-bottom: 1px solid #aeb6c5;
+  content: '';
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
+.selectShell select {
+  padding: 0 37px 0 12px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.textInput {
+  padding: 0 12px;
+}
+
+.textInput::placeholder,
+.inputShell input::placeholder {
+  color: #757c8e;
+}
+
+.textInput.invalid,
+.inputShell.invalid {
+  border-color: #c87979;
+  box-shadow: 0 0 0 3px rgba(200, 121, 121, .08);
+}
+
+.fieldHint,
+.fieldError {
+  display: block;
+  margin-top: 6px;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.fieldHint {
+  color: #8e95a8;
+}
+
+.fieldError {
+  color: #efa0a0;
+}
+
+.bankFields {
+  display: grid;
+}
+
+.bankFields .fieldLabel {
+  margin-top: 14px;
+}
+
+.submitButton {
+  display: flex;
+  width: 100%;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 20px;
+  padding: 0 13px;
+  border: 1px solid #7796c2;
+  border-radius: 8px;
+  background: linear-gradient(110deg, #284a78, #315c8d);
+  box-shadow: 0 5px 16px rgba(26, 54, 91, .2);
+  color: #f6f8fc;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .16s ease, transform .16s ease;
+}
+
+.submitButton:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.formDisclaimer {
+  margin: 10px 0 0;
+  color: #999eac;
+  font-size: 8px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.sideColumn {
+  display: grid;
+  gap: 14px;
+}
+
+.requestCard,
+.quickCard {
+  padding: 18px;
+}
+
+.requestList {
+  display: grid;
+  margin-top: 15px;
+}
+
+.requestRow {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.requestMark,
+.successIcon,
+.transactionIcon {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  flex: 0 0 31px;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(210, 165, 100, .12);
+  color: #d7bc83;
+}
+
+.requestInfo {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.requestInfo strong {
+  color: #ececf0;
+  font-size: 11px;
+}
+
+.requestInfo small {
+  overflow: hidden;
+  color: #969daf;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pendingBadge {
+  padding: 5px 7px;
+  border: 1px solid rgba(218, 183, 111, .24);
+  border-radius: 5px;
+  background: rgba(218, 183, 111, .08);
+  color: #e1c787;
+  font-size: 7px;
+  font-weight: 750;
+  letter-spacing: .55px;
+  white-space: nowrap;
+}
+
+.emptyState {
+  display: flex;
+  min-height: 154px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 8px 8px;
+  text-align: center;
+}
+
+.emptyState > span,
+.transactionEmpty > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .045);
+  color: #aab0bf;
+}
+
+.emptyState > strong,
+.transactionEmpty > strong {
+  color: #d9dce4;
+  font-size: 10px;
+}
+
+.emptyState > p,
+.transactionEmpty > p {
+  max-width: 240px;
+  margin: 6px 0 0;
+  color: #959cad;
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+.quickCard {
+  border-color: rgba(223, 189, 120, .15);
+  background:
+    radial-gradient(ellipse at 100% 0, rgba(185, 149, 83, .1), transparent 52%),
+    linear-gradient(145deg, #252738, #202233);
+}
+
+.quickCard h2 {
+  margin-top: 7px;
+  font-size: 13px;
+}
+
+.quickCard ol {
+  display: grid;
+  gap: 12px;
+  margin: 15px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quickCard li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #bec1cc;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.quickCard li span {
+  color: #d7bc83;
+  font-size: 8px;
+  font-weight: 750;
+}
+
+.quickCard > small {
+  display: block;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, .07);
+  color: #9399a8;
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+.transactionsCard {
+  margin-top: 14px;
+  padding: 18px;
+}
+
+.transactionHeader {
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.viewAllButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 0 5px 7px;
+  border: 0;
+  background: transparent;
+  color: #aac3e7;
+  font-size: 9px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.viewAllButton:hover {
+  color: #e6d39e;
+}
+
+.transactionList {
+  display: grid;
+}
+
+.transactionRow {
+  display: grid;
+  grid-template-columns: 31px minmax(0, 1fr) auto auto 124px;
+  align-items: center;
+  gap: 11px;
+  min-height: 54px;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.transactionIcon {
+  width: 29px;
+  height: 29px;
+  flex-basis: 29px;
+  background: rgba(210, 165, 100, .1);
+}
+
+.transactionText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.transactionText strong {
+  overflow: hidden;
+  color: #e2e4eb;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transactionText small {
+  overflow: hidden;
+  color: #9298a9;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transactionAmount {
+  color: #d8dbe5;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.transactionRow time {
+  color: #969cad;
+  font-size: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.transactionEmpty {
+  display: flex;
+  min-height: 144px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.transactionEmpty > span {
+  color: #a8bbd8;
+}
+
+.successCard {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 14px;
+  padding: 13px 15px;
+  border: 1px solid rgba(131, 185, 156, .23);
+  border-radius: 11px;
+  background: linear-gradient(110deg, rgba(83, 135, 102, .13), rgba(31, 34, 52, .58));
+}
+
+.successIcon {
+  width: 33px;
+  height: 33px;
+  flex-basis: 33px;
+  background: rgba(131, 185, 156, .15);
+  color: #a6cfb2;
+}
+
+.successCard > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.successCard > div > strong {
+  color: #d5e6da;
+  font-size: 10px;
+}
+
+.successCard > div > p {
+  margin: 3px 0 0;
+  overflow-wrap: anywhere;
+  color: #aab5ac;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 16px 1px 0;
+  color: #757c8e;
+  font-size: 8px;
+}
+
+.footer span:first-child {
+  color: #a8aebe;
+  font-weight: 750;
+  letter-spacing: 1px;
+}
+
+@media (min-width: 1600px) {
+  .main {
+    padding-right: 70px;
+    padding-left: 70px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .main {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contentGrid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(265px, .8fr);
+  }
+
+  .transactionRow {
+    grid-template-columns: 31px minmax(0, 1fr) auto auto;
+  }
+
+  .transactionRow time {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .main {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 22px 24px;
+  }
+}
+
+@media (max-width: 680px) {
+  .main {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .topbar {
+    min-height: 53px;
+  }
+
+  .pageIntro {
+    padding: 22px 0 16px;
+  }
+
+  .pageIntro h1 {
+    font-size: 25px;
+  }
+
+  .balanceCard {
+    min-height: 113px;
+    gap: 12px;
+    padding: 17px;
+  }
+
+  .balanceIcon {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .balanceCard > div > strong {
+    font-size: 24px;
+  }
+
+  .statsGrid {
+    gap: 9px;
+    margin-top: 10px;
+  }
+
+  .statCard {
+    padding: 12px;
+  }
+
+  .statHeading {
+    font-size: 8px;
+  }
+
+  .statIcon {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
+  }
+
+  .statCard > strong {
+    margin-top: 8px;
+    font-size: clamp(14px, 4vw, 18px);
+  }
+
+  .statCard > small {
+    font-size: 7px;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+    margin-top: 11px;
+  }
+
+  .formCard,
+  .requestCard,
+  .quickCard,
+  .transactionsCard {
+    padding: 15px;
+  }
+
+  .fieldLabel {
+    margin-top: 15px;
+  }
+
+  .sideColumn {
+    gap: 11px;
+  }
+
+  .transactionsCard {
+    margin-top: 11px;
+  }
+
+  .transactionRow {
+    grid-template-columns: 29px minmax(0, 1fr) auto;
+    gap: 8px;
+    min-height: 58px;
+  }
+
+  .transactionRow > .pendingBadge {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: -6px;
+  }
+
+  .transactionAmount {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .transactionIcon {
+    grid-row: 1 / span 2;
+  }
+
+  .transactionText {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 390px) {
+  .previewLabel {
+    font-size: 7px;
+  }
+
+  .balanceCard {
+    gap: 9px;
+    padding: 14px 12px;
+  }
+
+  .balanceCard > div > span {
+    gap: 5px;
+    font-size: 9px;
+  }
+
+  .balanceCard > div > strong {
+    font-size: 22px;
+  }
+
+  .statHeading {
+    gap: 3px;
+    font-size: 7px;
+  }
+
+  .pendingBadge {
+    padding: 4px 5px;
+    font-size: 6px;
+  }
+
+  .requestRow {
+    gap: 7px;
+  }
+}
