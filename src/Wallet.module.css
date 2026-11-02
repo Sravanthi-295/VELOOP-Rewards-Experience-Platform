@@ -321,8 +321,7 @@
   font-weight: 600;
 }
 
-.inputShell,
-.selectShell {
+.inputShell {
   position: relative;
   display: flex;
   width: 100%;
@@ -334,9 +333,7 @@
   transition: border-color .16s ease, box-shadow .16s ease;
 }
 
-.inputShell:focus-within,
-.selectShell:focus-within,
-.textInput:focus {
+.inputShell:focus-within {
   border-color: #839fc9;
   outline: none;
   box-shadow: 0 0 0 3px rgba(106, 145, 203, .12);
@@ -348,9 +345,7 @@
   font-size: 12px;
 }
 
-.inputShell input,
-.selectShell select,
-.textInput {
+.inputShell input {
   width: 100%;
   min-width: 0;
   min-height: 42px;
@@ -386,35 +381,10 @@
   appearance: textfield;
 }
 
-.selectShell::after {
-  position: absolute;
-  top: 16px;
-  right: 13px;
-  width: 7px;
-  height: 7px;
-  border-right: 1px solid #aeb6c5;
-  border-bottom: 1px solid #aeb6c5;
-  content: '';
-  pointer-events: none;
-  transform: rotate(45deg);
-}
-
-.selectShell select {
-  padding: 0 37px 0 12px;
-  appearance: none;
-  cursor: pointer;
-}
-
-.textInput {
-  padding: 0 12px;
-}
-
-.textInput::placeholder,
 .inputShell input::placeholder {
   color: #757c8e;
 }
 
-.textInput.invalid,
 .inputShell.invalid {
   border-color: #c87979;
   box-shadow: 0 0 0 3px rgba(200, 121, 121, .08);
@@ -434,14 +404,6 @@
 
 .fieldError {
   color: #efa0a0;
-}
-
-.bankFields {
-  display: grid;
-}
-
-.bankFields .fieldLabel {
-  margin-top: 14px;
 }
 
 .submitButton {

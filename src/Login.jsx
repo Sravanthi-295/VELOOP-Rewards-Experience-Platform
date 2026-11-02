@@ -6,9 +6,9 @@ import logo from './assets/logo.svg';
 export default function Login({ onSignIn }) {
   return (
     <main className={styles.page}>
-      <section className={styles.loginCard} aria-label="VELOOP Rewards sign-in">
+      <section className={styles.loginCard} aria-label="VELOOP Rewards demo">
         <div className={styles.brandPanel}>
-          <a className={styles.brand} href="#sign-in" aria-label="VELOOP Rewards">
+          <a className={styles.brand} href="#demo-entry" aria-label="VELOOP Rewards">
             <img src={logo} alt="VELOOP" />
             <span>REWARDS</span>
           </a>
@@ -30,7 +30,7 @@ export default function Login({ onSignIn }) {
           <span className={styles.orbit} aria-hidden="true" />
         </div>
 
-        <div className={styles.formPanel} id="sign-in">
+        <div className={styles.formPanel} id="demo-entry">
           <div className={styles.formIntro}>
             <span className={styles.welcomeBack}>INTERACTIVE DEMO</span>
             <h2>Explore VELOOP Rewards</h2>

@@ -2,14 +2,14 @@
 
 A responsive React dashboard prototype for VELOOP Rewards. The page brings current level progress, the next locked reward, a level roadmap, XP activity, earning opportunities, and a playable mini-game into one progression hub.
 
-The app opens with a responsive sign-in screen with a create-account option. Demo sign-in accepts any valid email and a password of at least six characters; demo registration asks for a name, valid email, matching passwords of at least eight characters, and terms acceptance. Both actions are frontend-only, do not create or verify real accounts, and reset when the page is refreshed.
+The app opens with a password-free demo entry screen. No account is created or verified, and no personal information is required to explore the prototype.
 
 ## Project overview
 
 - Current Level 04, 6,420 XP, and the XP remaining to the next milestone are shown together.
 - The Level 05 badge and 500 VEs reward are demo previews, not a promise of a live reward.
 - Level badge artwork is bundled locally from the supplied VELOOP reference page.
-- XP, levels, account details, activities, wallet balances, and all reward values are development-only data. There is no backend integration.
+- XP, levels, activities, wallet balances, and all reward values are development-only data. There is no backend integration.
 
 ## Level and XP system
 
@@ -43,14 +43,14 @@ All demo amounts are explicitly labelled in the UI.
 
 ## Wallet and payout prototype
 
-The **Wallet & payouts** navigation item opens a responsive wallet overview and payout request flow:
+The **Wallet demo** navigation item opens a responsive wallet overview and payout simulation:
 
 - The sample wallet starts with ₹1,250 available, ₹0 reserved, and a ₹100 minimum payout. These are illustrative values for demonstrating the workflow.
-- Users can submit a demo UPI or bank-transfer request. The form validates the amount, fictional UPI ID, account holder, account number, and IFSC format.
-- Submitting a valid request reserves the sample amount and shows a pending request, confirmation, and transaction row.
-- Payout balances and requests are held only in React state for the current page session. No payment information is transmitted or stored by the app.
+- Users can simulate a payout by entering an amount only. The app does not request UPI IDs, account names, bank account numbers, or IFSC codes.
+- Submitting a valid amount adjusts the sample balance and shows an explicitly simulated pending item and transaction row.
+- Payout balances and simulations are held only in React state for the current page session. No payment information is collected, transmitted, or stored by the app.
 
-**Use fictional payment details only.** This frontend prototype does not initiate transfers, verify identities, connect to a payment provider, or represent a real payout. Live payouts require an approved provider, secure server-side validation, authorization, privacy/security review, and reliable request/status handling.
+**Demo only.** This frontend prototype does not initiate transfers, verify identities, connect to a payment provider, or represent a real payout. Do not enter financial or personal information. Live payouts require an approved provider, secure server-side validation, authorization, privacy/security review, and reliable request/status handling.
 
 ## Technology stack
 
@@ -83,9 +83,9 @@ src/
   assets/                 VELOOP level badges, lock mark, and brand mark
   Dashboard.jsx           Sign-in-gated dashboard, progression state, and game
   Dashboard.module.css    Responsive dashboard, navigation, and game styles
-  Login.jsx               Responsive demo sign-in/create-account screens and validation
+  Login.jsx               Password-free demo entry screen
   Login.module.css        Authentication screen design, states, and mobile layouts
-  Wallet.jsx              Demo wallet overview and payout-request flow
+  Wallet.jsx              Demo wallet overview and amount-only payout simulation
   Wallet.module.css       Wallet, validation, and transaction-history styles
   global.css              Global typography and page background
   main.jsx                React entry point
@@ -94,7 +94,7 @@ index.html                Vite HTML entry point
 
 ## Component architecture
 
-`Dashboard.jsx` owns the dashboard's demo XP, check-in, game round, activity list, level-up state, and page navigation. `Wallet.jsx` owns the sample wallet balance, payout validation, requests, and session transaction list. The level roadmap and reward presentation use the locally bundled VELOOP badge assets. The two CSS Modules contain their respective layouts and responsive states.
+`Dashboard.jsx` owns the dashboard's demo XP, check-in, game round, activity list, level-up state, and page navigation. `Wallet.jsx` owns the sample wallet balance, amount-only payout simulation, and session transaction list. The level roadmap and reward presentation use the locally bundled VELOOP badge assets. The two CSS Modules contain their respective layouts and responsive states.
 
 ## Responsive behavior
 

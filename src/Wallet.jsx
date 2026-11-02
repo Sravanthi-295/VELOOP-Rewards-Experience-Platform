@@ -18,28 +18,18 @@ const formatDate = (date) => new Intl.DateTimeFormat('en-IN', {
   timeStyle: 'short'
 }).format(date);
 
-function validatePayout({ amount, method, upiId, accountName, accountNumber, ifscCode }, balance) {
+function validateDemoAmount(amount, balance) {
   const errors = {};
   const parsedAmount = Number(amount);
 
   if (!amount || !Number.isFinite(parsedAmount) || parsedAmount <= 0) {
-    errors.amount = 'Enter a valid payout amount.';
+    errors.amount = 'Enter an amount to simulate.';
   } else if (!Number.isInteger(parsedAmount)) {
-    errors.amount = 'Enter a whole amount in rupees.';
+    errors.amount = 'Enter a whole rupee amount.';
   } else if (parsedAmount < minimumPayout) {
-    errors.amount = `The minimum payout is ${currency.format(minimumPayout)}.`;
+    errors.amount = `The demo minimum is ${currency.format(minimumPayout)}.`;
   } else if (parsedAmount > balance) {
-    errors.amount = `Amount exceeds your available balance of ${currency.format(balance)}.`;
-  }
-
-  if (method === 'upi') {
-    if (!/^[\w.-]{2,256}@[A-Za-z][A-Za-z0-9.-]{1,63}$/.test(upiId.trim())) {
-      errors.upiId = 'Enter a valid demo UPI ID, for example demo@bank.';
-    }
-  } else {
-    if (accountName.trim().length < 2) errors.accountName = 'Enter the account holder name.';
-    if (!/^\d{9,18}$/.test(accountNumber.trim())) errors.accountNumber = 'Enter a valid 9–18 digit account number.';
-    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode.trim().toUpperCase())) errors.ifscCode = 'Enter a valid 11-character IFSC code.';
+    errors.amount = `Amount exceeds the sample balance of ${currency.format(balance)}.`;
   }
 
   return errors;
@@ -48,52 +38,39 @@ function validatePayout({ amount, method, upiId, accountName, accountNumber, ifs
 export default function Wallet({ onBack }) {
   const [availableBalance, setAvailableBalance] = useState(initialBalance);
   const [reservedBalance, setReservedBalance] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState('upi');
-  const [form, setForm] = useState({
-    amount: '500',
-    upiId: '',
-    accountName: '',
-    accountNumber: '',
-    ifscCode: ''
-  });
+  const [amount, setAmount] = useState('500');
   const [errors, setErrors] = useState({});
-  const [requests, setRequests] = useState([]);
+  const [simulations, setSimulations] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [submitted, setSubmitted] = useState(null);
 
   function updateField(event) {
-    const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: name === 'ifscCode' ? value.toUpperCase() : value }));
-    setErrors((current) => ({ ...current, [name]: '' }));
+    setAmount(event.target.value);
+    setErrors({});
     setSubmitted(null);
   }
 
-  function submitPayout(event) {
+  function simulatePayout(event) {
     event.preventDefault();
-    const nextErrors = validatePayout({ ...form, method: paymentMethod }, availableBalance);
+    const nextErrors = validateDemoAmount(amount, availableBalance);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    const amount = Number(form.amount);
-    const request = {
+    const payoutAmount = Number(amount);
+    const simulation = {
       id: `DEMO-${Date.now().toString().slice(-8)}`,
-      amount,
-      method: paymentMethod,
-      status: 'Pending',
+      amount: payoutAmount,
       createdAt: new Date()
     };
 
-    setAvailableBalance((balance) => balance - amount);
-    setReservedBalance((balance) => balance + amount);
-    setRequests((current) => [request, ...current]);
-    setTransactions((current) => [
-      { ...request, kind: 'Payout request' },
-      ...current
-    ]);
-    setSubmitted(request);
+    setAvailableBalance((balance) => balance - payoutAmount);
+    setReservedBalance((balance) => balance + payoutAmount);
+    setSimulations((current) => [simulation, ...current]);
+    setTransactions((current) => [simulation, ...current]);
+    setSubmitted(simulation);
     setErrors({});
-    setForm((current) => ({ ...current, amount: '' }));
+    setAmount('');
   }
 
   const visibleTransactions = showAllTransactions ? transactions : transactions.slice(0, 4);
@@ -106,22 +83,22 @@ export default function Wallet({ onBack }) {
       </header>
 
       <section className={styles.pageIntro}>
-        <p className={styles.eyebrow}>WITHDRAW REWARDS</p>
-        <h1>Wallet &amp; payouts</h1>
-        <p>Review your rewards balance and request a payout.</p>
+        <p className={styles.eyebrow}>DEMO WALLET</p>
+        <h1>Wallet preview</h1>
+        <p>Explore sample rewards and try a simulated payout. No transfer or financial details.</p>
       </section>
 
       <div className={styles.demoNotice} role="note">
         <Info size={16} />
-        <p><strong>Preview only.</strong> Sample balance and payout requests are held in this browser session. No money is transferred. Use fictional payment details only.</p>
+        <p><strong>Demo only.</strong> Balances and payout simulations stay in this browser session. No payment details are collected, no provider is connected, and no money is transferred.</p>
       </div>
 
-      <section className={styles.balanceCard} aria-label="Available payout balance">
+      <section className={styles.balanceCard} aria-label="Sample wallet balance">
         <span className={styles.balanceIcon}><WalletCards size={23} /></span>
         <div>
-          <span>Available for payout <span className={styles.sampleTag}>SAMPLE</span></span>
+          <span>Available sample balance <span className={styles.sampleTag}>DEMO</span></span>
           <strong>{currency.format(availableBalance)}</strong>
-          <small>Reserved funds are shown separately below.</small>
+          <small>Sample amount only; it has no cash value.</small>
         </div>
         <span className={styles.balanceShine} aria-hidden="true" />
       </section>
@@ -129,11 +106,11 @@ export default function Wallet({ onBack }) {
       <section className={styles.statsGrid} aria-label="Wallet summary">
         <article className={styles.statCard}>
           <div className={styles.statHeading}><span>Available balance</span><span className={`${styles.statIcon} ${styles.blue}`}><WalletCards size={17} /></span></div>
-          <strong>{currency.format(availableBalance)}</strong><small>Ready for a demo payout</small>
+          <strong>{currency.format(availableBalance)}</strong><small>Available for simulation</small>
         </article>
         <article className={styles.statCard}>
-          <div className={styles.statHeading}><span>Reserved balance</span><span className={`${styles.statIcon} ${styles.amber}`}><Clock3 size={17} /></span></div>
-          <strong>{currency.format(reservedBalance)}</strong><small>Pending payout requests</small>
+          <div className={styles.statHeading}><span>Reserved demo balance</span><span className={`${styles.statIcon} ${styles.amber}`}><Clock3 size={17} /></span></div>
+          <strong>{currency.format(reservedBalance)}</strong><small>Simulated amounts in this session</small>
         </article>
         <article className={styles.statCard}>
           <div className={styles.statHeading}><span>Recent credits</span><span className={`${styles.statIcon} ${styles.green}`}><ArrowDownLeft size={17} /></span></div>
@@ -148,94 +125,66 @@ export default function Wallet({ onBack }) {
       {submitted && (
         <section className={styles.successCard} role="status">
           <span className={styles.successIcon}><Check size={18} /></span>
-          <div><strong>Demo payout request created</strong><p>{currency.format(submitted.amount)} is now marked as pending. Reference: {submitted.id}</p></div>
-          <span className={styles.pendingBadge}>PENDING</span>
+          <div><strong>Demo simulation complete</strong><p>{currency.format(submitted.amount)} is marked pending in this demo only. No payment was sent. Reference: {submitted.id}</p></div>
+          <span className={styles.pendingBadge}>DEMO</span>
         </section>
       )}
 
       <section className={styles.contentGrid}>
-        <form className={styles.formCard} onSubmit={submitPayout} noValidate>
+        <form className={styles.formCard} onSubmit={simulatePayout} noValidate>
           <div className={styles.cardHeading}>
-            <div><h2>Request a payout</h2><p>Choose an amount and demo payment method.</p></div>
+            <div><h2>Simulate a payout</h2><p>Try the sample flow with an amount only.</p></div>
             <span className={styles.formIcon}><WalletCards size={19} /></span>
           </div>
 
-          <label className={styles.fieldLabel} htmlFor="payout-amount">Amount (₹)</label>
+          <label className={styles.fieldLabel} htmlFor="payout-amount">Demo amount (₹)</label>
           <div className={`${styles.inputShell} ${errors.amount ? styles.invalid : ''}`}>
             <span aria-hidden="true">₹</span>
-            <input id="payout-amount" name="amount" type="number" inputMode="decimal" min={minimumPayout} max={availableBalance} step="1" value={form.amount} onChange={updateField} aria-invalid={Boolean(errors.amount)} aria-describedby={errors.amount ? 'amount-error' : 'amount-help'} placeholder="Enter amount" />
+            <input id="payout-amount" name="amount" type="number" inputMode="decimal" min={minimumPayout} max={availableBalance} step="1" value={amount} onChange={updateField} aria-invalid={Boolean(errors.amount)} aria-describedby={errors.amount ? 'amount-error' : 'amount-help'} placeholder="Enter amount" />
           </div>
-          {errors.amount ? <small id="amount-error" className={styles.fieldError}>{errors.amount}</small> : <small id="amount-help" className={styles.fieldHint}>Minimum payout {currency.format(minimumPayout)} · Available {currency.format(availableBalance)}</small>}
+          {errors.amount ? <small id="amount-error" className={styles.fieldError}>{errors.amount}</small> : <small id="amount-help" className={styles.fieldHint}>Demo minimum {currency.format(minimumPayout)} · Sample balance {currency.format(availableBalance)}</small>}
 
-          <label className={styles.fieldLabel} htmlFor="payment-method">Payment method</label>
-          <div className={styles.selectShell}>
-            <select id="payment-method" value={paymentMethod} onChange={(event) => { setPaymentMethod(event.target.value); setErrors({}); setSubmitted(null); }}>
-              <option value="upi">UPI transfer</option>
-              <option value="bank">Bank transfer</option>
-            </select>
-          </div>
-
-          {paymentMethod === 'upi' ? (
-            <>
-              <label className={styles.fieldLabel} htmlFor="upi-id">UPI ID</label>
-              <input className={`${styles.textInput} ${errors.upiId ? styles.invalid : ''}`} id="upi-id" name="upiId" autoComplete="off" value={form.upiId} onChange={updateField} aria-invalid={Boolean(errors.upiId)} aria-describedby={errors.upiId ? 'upi-error' : 'upi-help'} placeholder="demo@bank" />
-              {errors.upiId ? <small id="upi-error" className={styles.fieldError}>{errors.upiId}</small> : <small id="upi-help" className={styles.fieldHint}>For this prototype, use a fictional UPI ID such as demo@bank.</small>}
-            </>
-          ) : (
-            <div className={styles.bankFields}>
-              <label className={styles.fieldLabel} htmlFor="account-name">Account holder name</label>
-              <input className={`${styles.textInput} ${errors.accountName ? styles.invalid : ''}`} id="account-name" name="accountName" autoComplete="off" value={form.accountName} onChange={updateField} aria-invalid={Boolean(errors.accountName)} placeholder="Demo Account Holder" />
-              {errors.accountName && <small className={styles.fieldError}>{errors.accountName}</small>}
-              <label className={styles.fieldLabel} htmlFor="account-number">Account number</label>
-              <input className={`${styles.textInput} ${errors.accountNumber ? styles.invalid : ''}`} id="account-number" name="accountNumber" type="password" inputMode="numeric" autoComplete="new-password" value={form.accountNumber} onChange={updateField} aria-invalid={Boolean(errors.accountNumber)} placeholder="9–18 digit demo number" />
-              {errors.accountNumber && <small className={styles.fieldError}>{errors.accountNumber}</small>}
-              <label className={styles.fieldLabel} htmlFor="ifsc-code">IFSC code</label>
-              <input className={`${styles.textInput} ${errors.ifscCode ? styles.invalid : ''}`} id="ifsc-code" name="ifscCode" autoComplete="off" maxLength={11} value={form.ifscCode} onChange={updateField} aria-invalid={Boolean(errors.ifscCode)} placeholder="ABCD0123456" />
-              {errors.ifscCode && <small className={styles.fieldError}>{errors.ifscCode}</small>}
-            </div>
-          )}
-
-          <button className={styles.submitButton} type="submit" onClick={submitPayout}>Submit demo payout request <ArrowRight size={17} /></button>
-          <p className={styles.formDisclaimer}>Prototype only — never enter real banking or payment details here.</p>
+          <button className={styles.submitButton} type="submit">Simulate demo payout <ArrowRight size={17} /></button>
+          <p className={styles.formDisclaimer}>Simulation only. No account, UPI, or bank details are requested or used.</p>
         </form>
 
         <aside className={styles.sideColumn}>
           <section className={styles.requestCard}>
             <div className={styles.cardHeading}>
-              <div><h2>Payout requests</h2><p>Track request status</p></div>
+              <div><h2>Demo simulations</h2><p>Sample activity in this session</p></div>
               <span className={styles.formIcon}><Clock3 size={18} /></span>
             </div>
-            {requests.length ? (
+            {simulations.length ? (
               <div className={styles.requestList}>
-                {requests.map((request) => (
-                  <article className={styles.requestRow} key={request.id}>
+                {simulations.map((simulation) => (
+                  <article className={styles.requestRow} key={simulation.id}>
                     <span className={styles.requestMark}><ArrowUpRight size={15} /></span>
-                    <span className={styles.requestInfo}><strong>{currency.format(request.amount)}</strong><small>{request.method === 'upi' ? 'UPI transfer' : 'Bank transfer'} · {formatDate(request.createdAt)}</small><small>Ref. {request.id}</small></span>
-                    <span className={styles.pendingBadge}>PENDING</span>
+                    <span className={styles.requestInfo}><strong>{currency.format(simulation.amount)}</strong><small>Demo simulation · {formatDate(simulation.createdAt)}</small><small>Ref. {simulation.id}</small></span>
+                    <span className={styles.pendingBadge}>DEMO</span>
                   </article>
                 ))}
               </div>
             ) : (
-              <div className={styles.emptyState}><span><Clock3 size={20} /></span><strong>No requests yet</strong><p>Your demo payout requests will appear here.</p></div>
+              <div className={styles.emptyState}><span><Clock3 size={20} /></span><strong>No simulations yet</strong><p>Demo activity will appear here when you try the sample flow.</p></div>
             )}
           </section>
 
           <section className={styles.quickCard}>
-            <p className={styles.eyebrow}>HOW PAYOUTS WORK</p>
-            <h2>Simple, clear, in control.</h2>
+            <p className={styles.eyebrow}>SIMULATION FLOW</p>
+            <h2>Try the sample experience.</h2>
             <ol>
-              <li><span>01</span>Enter an amount within your available balance.</li>
-              <li><span>02</span>Choose UPI or bank transfer details.</li>
-              <li><span>03</span>Track the request status in your wallet.</li>
+              <li><span>01</span>Enter a sample amount within the displayed balance.</li>
+              <li><span>02</span>See the sample balance update; no payment details are needed.</li>
+              <li><span>03</span>Review the simulated status in this wallet.</li>
             </ol>
-            <small>Steps shown for the frontend prototype. Real processing requires an approved payout provider and backend.</small>
+            <small>This is only an on-screen simulation. No payout provider or payment processing is connected.</small>
           </section>
         </aside>
       </section>
 
       <section className={styles.transactionsCard}>
         <div className={styles.transactionHeader}>
-          <div><h2>Recent transactions</h2><p>Your latest wallet activity</p></div>
+          <div><h2>Demo activity</h2><p>Sample activity for this session</p></div>
           {transactions.length > 4 && <button className={styles.viewAllButton} type="button" onClick={() => setShowAllTransactions((show) => !show)}>{showAllTransactions ? 'Show less' : 'View all'} <ArrowRight size={15} /></button>}
         </div>
         {visibleTransactions.length ? (
@@ -243,15 +192,15 @@ export default function Wallet({ onBack }) {
             {visibleTransactions.map((transaction) => (
               <article className={styles.transactionRow} key={transaction.id}>
                 <span className={styles.transactionIcon}><ArrowUpRight size={16} /></span>
-                <span className={styles.transactionText}><strong>Payout request</strong><small>{transaction.method === 'upi' ? 'UPI transfer' : 'Bank transfer'} · Ref. {transaction.id}</small></span>
+                <span className={styles.transactionText}><strong>Demo payout simulation</strong><small>On-screen only · Ref. {transaction.id}</small></span>
                 <span className={styles.transactionAmount}>− {currency.format(transaction.amount)}</span>
-                <span className={styles.pendingBadge}>PENDING</span>
+                <span className={styles.pendingBadge}>DEMO</span>
                 <time>{formatDate(transaction.createdAt)}</time>
               </article>
             ))}
           </div>
         ) : (
-          <div className={styles.transactionEmpty}><span><ArrowDownLeft size={22} /></span><strong>No transactions yet</strong><p>Your wallet activity will appear here after a demo payout request.</p></div>
+          <div className={styles.transactionEmpty}><span><ArrowDownLeft size={22} /></span><strong>No demo activity yet</strong><p>Sample wallet activity will appear here after a simulation.</p></div>
         )}
       </section>
 

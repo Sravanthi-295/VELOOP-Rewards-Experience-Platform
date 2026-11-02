@@ -173,7 +173,7 @@ export default function Dashboard() {
           <a className={styles.navItem} href="#play" onClick={() => setActivePage('dashboard')}><Gamepad2 size={18} /><span>Play &amp; earn</span></a>
           <a className={styles.navItem} href="#earn" onClick={() => setActivePage('dashboard')}><Coins size={18} /><span>Opportunities</span></a>
           <a className={styles.navItem} href="#activity" onClick={() => setActivePage('dashboard')}><Clock3 size={18} /><span>XP activity</span></a>
-          <button className={`${styles.navItem} ${activePage === 'wallet' ? styles.navActive : ''}`} type="button" onClick={() => { setActivePage('wallet'); setNotice(''); }}><WalletCards size={18} /><span>Wallet &amp; payouts</span></button>
+          <button className={`${styles.navItem} ${activePage === 'wallet' ? styles.navActive : ''}`} type="button" onClick={() => { setActivePage('wallet'); setNotice(''); }}><WalletCards size={18} /><span>Wallet demo</span></button>
         </nav>
 
         <div className={styles.sidebarNote}>
