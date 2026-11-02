@@ -110,6 +110,6 @@ No screenshots are included in this source-only workspace yet. Capture desktop, 
 
 ## Live demo and repository
 
-- **Live demo:** Not deployed from this workspace.
-- **GitHub repository:** No Git remote is configured in this workspace.
+- **Live demo:** https://veloop-rewards-experience-platform-green.vercel.app/
+- **GitHub repository:** https://github.com/Sravanthi-295/VELOOP-Rewards-Experience-Platform
 - **Author:** VELOOP Rewards frontend development task.
